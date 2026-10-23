@@ -1,0 +1,1193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ramya Ragu</title>
+  <meta name="description" content="Ramya Ragu: clinical NLP researcher working on LLM evaluation and confidence calibration in healthcare.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+/* =========================================================
+   Ramya Ragu: portfolio styles
+   Edit colours and fonts in :root; everything else follows.
+   ========================================================= */
+
+:root {
+  --paper:  #F6F8F8;
+  --tint:   #EBF1F1;
+  --card:   #FFFFFF;
+  --ink:    #1B2A31;
+  --muted:  #5A6A71;
+  --rule:   #D6E0E2;
+  --accent: #1E6B66;
+  --accent-soft: #DCEBE9;
+  --on-accent: #FFFFFF;
+
+  --serif: "Newsreader", Georgia, serif;
+  --sans:  "IBM Plex Sans", system-ui, sans-serif;
+  --wrap: 70rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10191D; --tint: #142126; --card: #192830; --ink: #E2EAEC; --muted: #9AAAB0;
+    --rule: #28383F; --accent: #6CC0B7; --accent-soft: #1B3534; --on-accent: #0E1A1C;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10191D; --tint: #142126; --card: #192830; --ink: #E2EAEC; --muted: #9AAAB0;
+  --rule: #28383F; --accent: #6CC0B7; --accent-soft: #1B3534; --on-accent: #0E1A1C;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-size: 1rem; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; }
+p { margin: 0 0 1rem; }
+a { color: var(--accent); text-underline-offset: .2em; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.muted { color: var(--muted); }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 1rem; }
+@media (min-width: 48rem) { .wrap { padding-inline: 2rem; } }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--paper); padding: .5rem 1rem; z-index: 50; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule);
+}
+.topbar-inner { display: flex; align-items: center; gap: .75rem; min-height: 3.6rem; }
+.brand { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); text-decoration: none; margin-right: auto; }
+.nav { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.25rem; }
+.nav a { color: var(--muted); text-decoration: none; font-size: .9rem; padding: .3rem 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+.nav a:hover { color: var(--ink); }
+.nav a.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.icon-btn { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; background: transparent; border: 1px solid var(--rule); border-radius: 50%; }
+.icon-btn:hover { border-color: var(--accent); }
+.theme-btn svg { width: 1rem; height: 1rem; fill: var(--ink); }
+.menu-btn { display: none; }
+.menu-icon, .menu-icon::before, .menu-icon::after { display: block; width: 1rem; height: 2px; background: var(--ink); position: relative; transition: transform .2s; }
+.menu-icon::before, .menu-icon::after { content: ""; position: absolute; left: 0; }
+.menu-icon::before { top: -5px; } .menu-icon::after { top: 5px; }
+.menu-btn[aria-expanded="true"] .menu-icon { background: transparent; }
+.menu-btn[aria-expanded="true"] .menu-icon::before { transform: translateY(5px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .menu-icon::after { transform: translateY(-5px) rotate(-45deg); }
+
+@media (max-width: 52rem) {
+  .menu-btn { display: grid; }
+  .nav {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0; padding: .25rem 1rem 1rem;
+    background: var(--paper); border-bottom: 1px solid var(--rule);
+  }
+  .nav.is-open { display: flex; }
+  .nav a { display: block; padding: .7rem 0; border-bottom: 1px solid var(--rule); font-size: 1rem; }
+  .nav a.is-active { border-bottom-color: var(--rule); }
+}
+
+/* ---------- 1. Hero ---------- */
+.hero { padding-top: clamp(3.5rem, 10vw, 7rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
+.hero-name {
+  font-family: var(--serif); font-weight: 400; letter-spacing: -.02em;
+  font-size: clamp(3rem, 9vw, 5.5rem); line-height: 1;
+}
+.hero-identity { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--accent); font-weight: 500; margin: 1rem 0 1.5rem; }
+.hero-pitch { font-size: clamp(1.1rem, 2.2vw, 1.3rem); line-height: 1.55; max-width: 40rem; color: var(--ink); margin-bottom: 2rem; }
+
+.quick-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+.quick-links a {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem 1.1rem; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--card); color: var(--ink); text-decoration: none; font-weight: 500; font-size: .95rem;
+  transition: border-color .2s, transform .2s;
+}
+.quick-links a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.quick-links a.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.quick-links svg { width: 1.1rem; height: 1.1rem; fill: currentColor; }
+.quick-links .li-text { fill: var(--card); }
+
+/* ---------- Sections ---------- */
+.section { padding-block: clamp(3.5rem, 7vw, 5rem); }
+.section-tint { background: var(--tint); }
+.sec-h { font-family: var(--serif); font-weight: 500; font-size: clamp(1.75rem, 3.5vw, 2.25rem); margin-bottom: 2rem; }
+.sub-h { font-size: 1rem; font-weight: 600; margin: 0 0 1rem; }
+
+.badge { display: inline-block; font-size: .75rem; font-weight: 500; padding: .1rem .55rem; border-radius: 999px; border: 1px solid var(--rule); color: var(--muted); white-space: nowrap; vertical-align: 1px; }
+.badge-accent { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+/* ---------- 2. Origin story: interlocking puzzle pieces ---------- */
+.story-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin: -1rem 0 0; }
+.story-intro { color: var(--muted); margin: 0; font-size: 1.05rem; }
+#story-body { margin-top: 2.25rem; }
+
+.pieces {
+  --knob: 2.6rem;
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+}
+@media (min-width: 56rem) { .pieces { grid-template-columns: repeat(4, 1fr); } }
+
+.piece {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  padding: 1.75rem 1.75rem 1.9rem;
+  transition: background-color .3s, transform .7s cubic-bezier(.2,.75,.2,1), opacity .7s ease;
+}
+.piece:nth-child(even) { background: var(--tint); }
+.piece:hover { background: var(--accent-soft); z-index: 3; }
+
+/* Shared edges: collapse double borders */
+.piece + .piece { border-top-width: 0; }
+@media (min-width: 56rem) {
+  .piece + .piece { border-top-width: 1px; border-left-width: 0; }
+  .piece:first-child { border-radius: 12px 0 0 12px; }
+  .piece:last-child  { border-radius: 0 12px 12px 0; }
+}
+@media (max-width: 55.99rem) {
+  .piece:first-child { border-radius: 12px 12px 0 0; }
+  .piece:last-child  { border-radius: 0 0 12px 12px; }
+}
+
+/* The knob: half a circle of the previous piece, pushed into this one */
+.piece + .piece::before {
+  content: ""; position: absolute; z-index: 2;
+  width: var(--knob); height: var(--knob); border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  /* phone: knob drops down from the piece above */
+  top: calc(var(--knob) / -2 - 1px); left: 50%; transform: translateX(-50%);
+  clip-path: inset(calc(50% - 1px) 0 0 0);
+  transition: background-color .3s;
+}
+.piece:nth-child(even)::before { background: var(--card); }
+.piece:nth-child(odd) + .piece::before { background: var(--card); }
+.piece:nth-child(even) + .piece::before { background: var(--tint); }
+.pieces .piece:hover + .piece::before { background: var(--accent-soft); }
+@media (min-width: 56rem) {
+  .piece + .piece::before {
+    /* desktop: knob comes in from the piece on the left, at height --k */
+    top: var(--kprev, 40%); left: calc(var(--knob) / -2 - 1px); transform: translateY(-50%);
+    clip-path: inset(0 0 0 calc(50% - 1px));
+  }
+  .piece:nth-child(2)::before { --kprev: 30%; }
+  .piece:nth-child(3)::before { --kprev: 62%; }
+  .piece:nth-child(4)::before { --kprev: 36%; }
+}
+
+.piece-num { display: block; font-family: var(--serif); font-size: 1.1rem; color: var(--accent); margin-bottom: .6rem; }
+.piece h3 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.6rem; margin-bottom: .75rem; }
+.piece p { color: var(--muted); font-size: .95rem; margin: 0 0 .75rem; position: relative; z-index: 3; }
+.piece .piece-line { color: var(--ink); font-style: italic; margin: 0; }
+
+/* One orchestrated moment: the pieces slide together when they come into view */
+@media (prefers-reduced-motion: no-preference) {
+  .pieces.will-merge .piece { opacity: 0; }
+  .pieces.will-merge .piece:nth-child(1) { transform: translate(-1.5rem, 0) rotate(-2deg); }
+  .pieces.will-merge .piece:nth-child(2) { transform: translate(-.5rem, 1rem) rotate(1.5deg); }
+  .pieces.will-merge .piece:nth-child(3) { transform: translate(.5rem, -1rem) rotate(-1.5deg); }
+  .pieces.will-merge .piece:nth-child(4) { transform: translate(1.5rem, 0) rotate(2deg); }
+  .pieces.will-merge.merged .piece { opacity: 1; transform: none; }
+  .pieces.merged .piece:nth-child(2) { transition-delay: .08s; }
+  .pieces.merged .piece:nth-child(3) { transition-delay: .16s; }
+  .pieces.merged .piece:nth-child(4) { transition-delay: .24s; }
+}
+
+.story-coda {
+  margin: 2rem 0 0; font-family: var(--serif); font-style: italic; font-size: 1.05rem; line-height: 1.6; color: var(--muted);
+}
+
+/* ---------- 3. Featured projects ---------- */
+.projects { display: grid; gap: 1.25rem; }
+@media (min-width: 46rem) { .projects { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 64rem) { .projects { grid-template-columns: repeat(3, 1fr); } }
+
+.project {
+  background: var(--card); border: 1px solid var(--rule); border-radius: 12px;
+  padding: 1.5rem; display: flex; flex-direction: column;
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+.project:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 28px -18px color-mix(in srgb, var(--accent) 60%, transparent); }
+.project-kind { font-size: .8rem; color: var(--muted); margin-bottom: .5rem; }
+.project h3 { font-family: var(--serif); font-weight: 500; font-size: 1.35rem; margin-bottom: .6rem; }
+.project-sum { color: var(--muted); font-size: .93rem; }
+
+.metrics { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; margin: .5rem 0 1rem; padding: 1rem 0; border-block: 1px solid var(--rule); }
+.metrics div { display: flex; flex-direction: column; min-width: 4.5rem; flex: 1; }
+.metrics dd { margin: 0; order: -1; font-family: var(--serif); font-size: 1.75rem; line-height: 1.1; color: var(--accent); }
+.metrics dt { font-size: .78rem; color: var(--muted); line-height: 1.35; margin-top: .2rem; }
+.project-badge { font-size: .82rem; color: var(--ink); margin-bottom: 1.25rem; }
+
+.project-actions { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; }
+.btn {
+  border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
+  padding: .5rem .95rem; border-radius: 999px; font-size: .85rem; font-weight: 500;
+  transition: filter .2s;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn-ghost { background: transparent; color: var(--accent); }
+.btn-ghost:hover { background: var(--accent-soft); filter: none; }
+.repo { font-size: .85rem; font-weight: 500; width: 100%; margin-top: .25rem; }
+
+/* ---------- Pop-up windows ---------- */
+.modal {
+  width: min(46rem, calc(100vw - 2rem)); max-height: calc(100vh - 3rem);
+  padding: 0; border: 1px solid var(--rule); border-radius: 14px;
+  background: var(--card); color: var(--ink);
+}
+.modal::backdrop { background: rgba(10, 20, 22, .55); backdrop-filter: blur(3px); }
+.modal[open] { animation: pop .22s ease-out; }
+@keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .modal[open] { animation: none; } }
+
+.modal-head { position: sticky; top: 0; background: var(--card); padding: 1.5rem 3.5rem 1rem 1.5rem; border-bottom: 1px solid var(--rule); z-index: 1; }
+.modal-head .project-kind { margin-bottom: .25rem; }
+.modal-head h3 { font-family: var(--serif); font-weight: 500; font-size: 1.5rem; }
+.close {
+  position: absolute; top: 1rem; right: 1rem; width: 2.25rem; height: 2.25rem;
+  border: 1px solid var(--rule); background: transparent; border-radius: 50%; font-size: 1.3rem; line-height: 1;
+}
+.close:hover { border-color: var(--accent); color: var(--accent); }
+
+.method { display: grid; gap: 1px; background: var(--rule); }
+@media (min-width: 40rem) { .method { grid-template-columns: 1fr 1fr; } }
+.method section { background: var(--card); padding: 1.25rem 1.5rem 1.5rem; }
+.method h4 { font-size: .85rem; font-weight: 600; color: var(--accent); margin-bottom: .5rem; }
+.method p, .method ul { margin: 0; color: var(--ink); font-size: .95rem; }
+.method ul { padding-left: 1.1rem; }
+.method li { margin-bottom: .35rem; }
+
+/* Architecture flow */
+.flow { list-style: none; margin: 0; padding: 1.5rem 1.5rem .25rem; display: grid; gap: 1.6rem; }
+.flow > li {
+  position: relative; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px;
+  padding: .65rem 1rem; text-align: center;
+}
+.flow > li:not(:last-child)::after {
+  content: ""; position: absolute; left: 50%; bottom: -1.35rem; width: 2px; height: 1rem;
+  background: var(--accent); transform: translateX(-50%);
+}
+.flow > li:not(:last-child)::before {
+  content: ""; position: absolute; left: 50%; bottom: -1.45rem; transform: translateX(-50%);
+  border: 6px solid transparent; border-top-color: var(--accent); border-bottom: 0;
+}
+.flow b { display: block; font-weight: 600; font-size: .95rem; }
+.flow span { display: block; color: var(--muted); font-size: .85rem; }
+.flow-split ul { list-style: none; margin: .65rem 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; }
+.flow-split ul li { background: var(--accent-soft); color: var(--accent); font-size: .8rem; font-weight: 500; padding: .25rem .7rem; border-radius: 999px; }
+.flow > li.flow-end { background: var(--accent); border-color: var(--accent); }
+.flow > li.flow-end b, .flow > li.flow-end span { color: var(--on-accent); }
+.modal-note { font-size: .8rem; color: var(--muted); padding: 0 1.5rem 1.25rem; margin: 1rem 0 0; text-align: center; }
+
+/* ---------- 4. Publications ---------- */
+.pubs { list-style: none; margin: 0; padding: 0; }
+.pubs > li { display: grid; gap: .25rem 1.5rem; padding: 1.1rem 0; border-top: 1px solid var(--rule); }
+.pubs > li:last-child { border-bottom: 1px solid var(--rule); }
+@media (min-width: 40rem) { .pubs > li { grid-template-columns: 4rem 1fr; } }
+.year { font-family: var(--serif); font-size: 1.15rem; color: var(--accent); }
+.pub-title { font-weight: 500; margin: 0 0 .25rem; max-width: 50rem; }
+.pub-meta { color: var(--muted); font-size: .9rem; margin: 0; }
+.pub-meta b { color: var(--ink); font-weight: 500; }
+
+/* ---------- 5. Experience ---------- */
+.entries { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.entries > li {
+  display: grid; gap: .25rem 1.5rem; background: var(--card); border: 1px solid var(--rule);
+  border-radius: 12px; padding: 1.25rem 1.5rem; transition: border-color .2s;
+}
+.entries > li:hover { border-color: var(--accent); }
+@media (min-width: 46rem) { .entries > li { grid-template-columns: 10rem 1fr; } }
+.when { font-size: .85rem; color: var(--muted); padding-top: .15rem; }
+.entries h3, .edu h3 { font-size: 1.05rem; font-weight: 600; }
+.where { color: var(--accent); font-size: .92rem; margin: .1rem 0 .5rem; }
+.entries ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .93rem; }
+.entries ul li { margin-bottom: .3rem; }
+.entries ul b { color: var(--ink); font-weight: 500; }
+
+/* ---------- 6. Education ---------- */
+.edu { display: grid; gap: 1rem; }
+@media (min-width: 46rem) { .edu { grid-template-columns: 1fr 1fr; } }
+.edu article { border-left: 3px solid var(--accent); padding: .25rem 0 .25rem 1.25rem; }
+.edu .when { display: block; margin-bottom: .35rem; }
+.edu-note { font-size: .9rem; color: var(--muted); margin: 0; }
+
+/* ---------- 7. Skills & research interests ---------- */
+.interests { list-style: none; margin: 0 0 2.5rem; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.interests li { background: var(--card); border: 1px solid var(--rule); padding: .45rem .95rem; border-radius: 999px; font-size: .92rem; transition: border-color .2s, color .2s; }
+.interests li:hover { border-color: var(--accent); color: var(--accent); }
+
+.icon-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr)); gap: 1.4rem .5rem; }
+.icon-grid li { display: flex; flex-direction: column; align-items: center; gap: .45rem; text-align: center; }
+.icon-grid svg { width: 2.2rem; height: 2.2rem; fill: currentColor; color: var(--muted); transition: color .2s, transform .2s; }
+.icon-grid span { font-size: .78rem; color: var(--muted); }
+.icon-grid li:hover svg { color: var(--accent); transform: translateY(-3px); }
+.icon-grid li:hover span { color: var(--ink); }
+.certs-line { margin: 2.5rem 0 0; font-size: .92rem; color: var(--muted); }
+
+/* ---------- Footer ---------- */
+.footer { padding-block: 2.5rem; border-top: 1px solid var(--rule); font-size: .92rem; }
+.footer p { margin-bottom: .3rem; }
+
+/* Highlight the steps that were my contribution */
+.flow > li.flow-mine { border: 2px solid var(--accent); background: var(--accent-soft); }
+.flow > li.flow-mine::marker { content: none; }
+.flow > li.flow-mine b::after {
+  content: "My part"; margin-left: .5rem; font-size: .7rem; font-weight: 600; vertical-align: 2px;
+  padding: .05rem .5rem; border-radius: 999px; background: var(--accent); color: var(--on-accent);
+}
+.mine-key { display: inline-block; width: .8rem; height: .8rem; margin-right: .4rem; vertical-align: -1px; border: 2px solid var(--accent); background: var(--accent-soft); border-radius: 3px; }
+.method-role { grid-column: 1 / -1; background: var(--accent-soft) !important; }
+
+/* ---------- Architecture images (your own diagrams) ---------- */
+.arch-img { margin: 1.25rem 1.5rem 0; }
+.arch-img a { display: block; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; background: #fff; cursor: zoom-in; }
+.arch-img img { display: block; width: 100%; height: auto; }
+.arch-img figcaption { font-size: .8rem; color: var(--muted); margin-top: .4rem; text-align: center; }
+.flow-wrap { margin-top: .5rem; }
+.flow-wrap > summary {
+  cursor: pointer; list-style: none; padding: .9rem 1.5rem 0; color: var(--accent); font-weight: 500; font-size: .9rem;
+}
+.flow-wrap > summary::-webkit-details-marker { display: none; }
+.flow-wrap > summary::before { content: "+ "; }
+.flow-wrap[open] > summary::before { content: "− "; }
+/* With no image, the step-by-step view is the main content, so hide its toggle */
+.modal.no-arch-img .flow-wrap > summary { display: none; }
+
+/* ---------- Education grades ---------- */
+.grades { display: flex; gap: 2rem; margin: .5rem 0 .6rem; }
+.grades div { display: flex; flex-direction: column; }
+.grades dt { font-size: .78rem; color: var(--muted); }
+.grades dd { margin: 0; order: -1; font-family: var(--serif); font-size: 1.5rem; color: var(--accent); line-height: 1.2; }
+.grades dd.todo { font-family: var(--sans); font-size: .85rem; font-weight: 600; color: #B5761B; padding-top: .45rem; }
+
+/* ---------- Research path (puzzle pieces in section 2) ---------- */
+.path-pieces .piece-num { font-family: var(--sans); font-size: .85rem; font-weight: 500; }
+#path, #story { overflow-x: clip; }
+#path .story-intro { margin: -1.25rem 0 2.25rem; }
+
+
+/* ---------- Research interests: method cards ---------- */
+.areas-intro { color: var(--muted); max-width: 46rem; margin: -.25rem 0 1.5rem; }
+.areas { display: grid; gap: 1rem; margin-bottom: 3rem; }
+@media (min-width: 46rem) { .areas { grid-template-columns: 1fr 1fr; } }
+.area {
+  background: var(--card); border: 1px solid var(--rule); border-radius: 12px;
+  padding: 1.4rem 1.5rem; display: flex; flex-direction: column;
+  transition: border-color .2s;
+}
+.area:hover { border-color: var(--accent); }
+.area h4 { font-family: var(--serif); font-weight: 500; font-size: 1.25rem; margin-bottom: .5rem; }
+.area > p { color: var(--muted); font-size: .93rem; margin-bottom: 1rem; }
+.techs { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+.techs li { background: var(--accent-soft); color: var(--accent); font-size: .8rem; font-weight: 500; padding: .25rem .7rem; border-radius: 999px; }
+.area .area-seen { margin: auto 0 0; font-size: .85rem; color: var(--muted); }
+.area-next { border-style: dashed; }
+.area .area-tag { font-size: .8rem; font-weight: 600; color: var(--accent); margin-bottom: .35rem; }
+
+/* ---------- Verify certifications ---------- */
+.certs-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2.5rem; }
+.certs-row .certs-line { margin: 0; }
+.cert-groups { padding: .5rem 1.5rem 1.5rem; }
+.cert-groups h4 { font-size: .85rem; font-weight: 600; color: var(--accent); margin: 1.25rem 0 .5rem; }
+.cert-list { list-style: none; margin: 0; padding: 0; }
+.cert-list li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .7rem 0; border-top: 1px solid var(--rule); }
+.cert-list b { display: block; font-weight: 500; font-size: .95rem; }
+.cert-list span { display: block; color: var(--muted); font-size: .8rem; overflow-wrap: anywhere; }
+.cert-list a {
+  flex-shrink: 0; font-size: .8rem; font-weight: 500; text-decoration: none; white-space: nowrap;
+  border: 1px solid var(--rule); border-radius: 999px; padding: .3rem .8rem; color: var(--ink);
+}
+.cert-list a:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 30rem) { .cert-list li { flex-direction: column; align-items: flex-start; gap: .4rem; } }
+
+/* Domain band + methods label (research interests) */
+.domain {
+  background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--accent);
+  border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem;
+}
+.domain h4 { font-family: var(--serif); font-weight: 500; font-size: 1.35rem; margin-bottom: .75rem; }
+.domain .techs { margin: 0; }
+.domain-label { font-size: .8rem; font-weight: 600; color: var(--accent); margin: 0 0 .3rem; }
+.methods-label { margin-bottom: .75rem; }
+@media (min-width: 64rem) { .areas { grid-template-columns: repeat(3, 1fr); } }
+.area .techs { margin-bottom: 0; }
+
+</style>
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ================= TOP BAR ================= -->
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top">Ramya Ragu</a>
+      <nav aria-label="Sections">
+        <ul class="nav" id="nav">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+        </ul>
+      </nav>
+      <button class="icon-btn menu-btn" aria-expanded="false" aria-controls="nav" aria-label="Menu">
+        <span class="menu-icon" aria-hidden="true"></span>
+      </button>
+      <button class="icon-btn theme-btn" aria-label="Switch between light and dark mode">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+      <!-- ================= 1. HERO ================= -->
+    <section class="hero wrap" id="top">
+      <div class="hero-grid">
+ 
+        <!-- Photo: circle beside the text -->
+        <figure class="hero-photo">
+          <img src="assets/ramya.jpeg" alt="Ramya Ragu" width="320" height="320">
+        </figure>
+ 
+        <div class="hero-text">
+          <!-- a) Headline: name + core identity -->
+          <h1 class="hero-name">Ramya Ragu</h1>
+          <p class="hero-identity">NLP &amp; Human–AI Interaction · Clinical &amp; Biomedical Applications</p>
+ 
+          <!-- b) Pitch -->
+          <p class="hero-pitch">I've always been curious to observe and learn, and I believe every move suggests another possibility. I bring the same habit to technology, weighing several implementation strategies before settling on one. Healthcare draws me most because it is a high-stakes environment where every decision has consequences and a single error can cost lives. I see working within that challenge as a privilege: it means understanding how we think and act under pressure.</p>
+ 
+          <!-- Outside tech -->
+          <p class="hero-aside">Away from the screen, I'm usually dancing (Bharatanatyam) or plotting my next move in a board game.</p>
+ 
+          <!-- c) Quick links -->
+          <ul class="quick-links">
+            <li>
+              <a href="mailto:ramyaragu2506@gmail.com">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/RamyaRagu2506">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/ramya-ragu-322747236/">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="4"/><text x="12" y="17" text-anchor="middle" font-size="12" font-weight="700" font-family="IBM Plex Sans, sans-serif" class="li-text">in</text></svg>LinkedIn
+              </a>
+            </li>
+            <li>
+              <a class="primary" href="assets/CV_ramya_ragu_2026.pdf" download>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0-4.5-4.5M12 14l4.5-4.5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Download CV
+              </a>
+            </li>
+          </ul>
+        </div>
+    </section>
+
+        <!-- ================= 2. RESEARCH PATH ================= -->
+    <!-- <section class="section wrap" id="path" aria-labelledby="path-h">
+      <h2 id="path-h" class="sec-h">How my research has evolved</h2>
+      <p class="story-intro">My research interests run through every project, and each one raised the question the next set out to answer.</p>
+
+      <ol class="pieces path-pieces">
+        <li class="piece">
+          <span class="piece-num">2022 – 2023</span>
+          <h3>Extracting</h3>
+          <p>Decision-support dashboards and sentiment analysis of drug reviews gave a consolidated view of patient experience. They also showed that accurate models without transparency are hard to trust.</p> -->
+          <!-- <p class="piece-line">Can we see the basis behind a model's choice?</p>
+        </li>
+        <li class="piece">
+          <span class="piece-num">2024</span>
+          <h3>Structuring</h3>
+          <p>MedOntoKG turned unstructured Alzheimer's literature into an ontology-driven knowledge graph, making disease insights more accessible and interpretable. It became my bachelor's thesis and a patent application.</p>
+          <p class="piece-line">How do you know an extraction is right?</p>
+        </li>
+        <li class="piece">
+          <span class="piece-num">2025</span>
+          <h3>Constraining</h3>
+          <p>Confidence-based prompting helped characterise and constrain LLM behaviour. At Amsterdam UMC, building a conversational agent taught me to translate between clinicians' needs and what a model can express.</p>
+          <p class="piece-line">Can confidence shape what a model says, and how?</p>
+        </li>
+        <li class="piece">
+          <span class="piece-num">2026</span>
+          <h3>Trusting</h3>
+          <p>My master's thesis treats transparency as a communication challenge: does an LLM's survival-risk explanation convey the right level of confidence? Misplaced certainty proved riskier than hallucination.</p>
+          <p class="piece-line">Would a clinician rely on it appropriately, neither too much nor too little?</p>
+        </li>
+      </ol>
+
+      <div class="path-next">
+        <p class="path-next-label">Next</p>
+        <p><b>An abstention-aware, interactive clinical decision support system</b>, one that knows when to answer, defer or ask for more information. It focuses on iterative information gathering, knowledge-grounded reasoning, and alignment between a model's internal and verbalised confidence.</p>
+      </div>
+
+    </section> -->
+
+    <!-- ================= 3. FEATURED PROJECTS ================= -->
+    <section class="section section-tint" id="projects" aria-labelledby="projects-h">
+      <div class="wrap">
+        <h2 id="projects-h" class="sec-h">Featured projects</h2>
+
+        <div class="projects">
+
+          <!-- ---------- Project 1: MSc thesis (2026) ---------- -->
+          <article class="project">
+            <p class="project-kind">Master's thesis · 2026</p>
+            <h3>Evaluating LLM-generated survival explanations</h3>
+            <p class="project-sum">Can an LLM's confidence be trusted when it explains a pancreatic cancer survival prediction?</p>
+            <dl class="metrics">
+              <div><dd>300</dd><dt>synthetic survival cases generated</dt></div>
+              <div><dd>50</dd><dt>selected by stratified sampling</dt></div>
+              <div><dd>400</dd><dt>explanations from 8 prompt and decoding set-ups</dt></div>
+            </dl>
+            <p class="project-badge">Extended into a multi-model paper, under review at ACM CHI 2027</p>
+            <div class="project-actions">
+              <button class="btn" data-open="m-thesis">View methodology</button>
+              <button class="btn btn-ghost" data-open="a-thesis">Architecture</button>
+              <a class="repo" href="mailto:ramyaragu2506@gmail.com?subject=Thesis%20code%20request">Code on request</a>
+            </div>
+          </article>
+
+          <!-- ---------- Project 2: Hybrid extraction (2025) ---------- -->
+          <article class="project">
+            <p class="project-kind">Course project, team of two · 2025</p>
+            <h3>Hybrid ontology extraction: human–AI knowledge graph construction</h3>
+            <p class="project-sum">Can human-defined ontology structure keep LLM-based extraction consistent and in scope?</p>
+            <dl class="metrics">
+              <div><dd>811</dd><dt>triples, up from 114</dt></div>
+              <div><dd>473</dd><dt>individuals extracted</dt></div>
+              <div><dd>146</dd><dt>ontology classes</dt></div>
+            </dl>
+            <p class="project-badge">My part: LLM-based triple generation.</p>
+            <div class="project-actions">
+              <button class="btn" data-open="m-hybrid">View methodology</button>
+              <button class="btn btn-ghost" data-open="a-hybrid">Architecture</button>
+              <a class="repo" href="https://github.com/RamyaRagu2506/Hybrid_Ontology_Extraction_System_for_Knowledge_Graphs">GitHub repo</a>
+            </div>
+          </article>
+
+          <!-- ---------- Project 3: MedOntoKG (2024) ---------- -->
+          <article class="project">
+            <p class="project-kind">Bachelor's thesis · 2024</p>
+            <h3>MedOntoKG: knowledge graphs from biomedical literature</h3>
+            <p class="project-sum">Can NLP turn thousands of Alzheimer's research abstracts into a structured map of diagnosis, prognosis and treatment?</p>
+            <dl class="metrics">
+              <div><dd>17,851</dd><dt>Scopus abstracts processed</dt></div>
+              <div><dd>85%</dd><dt> Validation accuracy classifying abstracts by aspect</dt></div>
+              <div><dd>41</dd><dt>biomedical entity types recognised</dt></div>
+            </dl>
+            <p class="project-badge">Led to a published Indian patent application</p>
+            <div class="project-actions">
+              <button class="btn" data-open="m-medonto">View methodology</button>
+              <button class="btn btn-ghost" data-open="a-medonto">Architecture</button>
+              <a class="repo" href="https://github.com/RamyaRagu2506/MedOntoKG_Ontology_enhanced_Biomedical_Text_Mining_for_comprehensive_knowledge_extraction">GitHub repo</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. PUBLICATIONS ================= -->
+    <section class="section wrap" id="publications" aria-labelledby="pubs-h">
+      <h2 id="pubs-h" class="sec-h">Publications</h2>
+      <ul class="pubs">
+        <li>
+          <span class="year">2027</span>
+          <div>
+            <p class="pub-title">When Clinical Predictions Become Narratives: A Risk Communication Contract for LLM-Generated Survival Explanations</p>
+            <p class="pub-meta">Elena Beretta, <b>Ramya Ragu</b>. ACM CHI 2027. Builds on my master's thesis, extended to multiple models. <span class="badge badge-accent">Under review</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="year">2026</span>
+          <div>
+            <p class="pub-title">Evaluation of LLM-Generated Survival Explanations: Integrating Prompt Design, Confidence, Stability, and Grounding in Synthetic Clinical Narratives</p>
+            <p class="pub-meta"><b>Ramya Ragu</b>. Master's thesis, Vrije Universiteit Amsterdam. Supervised by Elena Beretta. <span class="badge">Graded 9/10</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="year">2024</span>
+          <div>
+            <p class="pub-title">A System and Method for Information Extraction and Knowledge Organization in Biomedical Literature</p>
+            <p class="pub-meta">Paavai Anand, <b>Ramya Ragu</b>, Srinivas Muralidharan. Indian Patent Application No. 202441093281. <span class="badge">Published, awaiting examination</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="year">2023</span>
+          <div>
+            <p class="pub-title">Developing a Personalized Clinical Support System Utilizing Classification Models for Drug Assessment</p>
+            <p class="pub-meta"><b>Ramya Ragu</b>, Niveditha S. NCTS'23, SRMIST, Chennai. <span class="badge">Best Paper</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="year">2022</span>
+          <div>
+            <p class="pub-title">Clinical Trials Selection for Cancer Patients using NLP</p>
+            <p class="pub-meta"><b>Ramya Ragu</b>. UBERTECH'22, SRMIST, Chennai. <span class="badge">Second place</span></p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= 5. EXPERIENCE ================= -->
+    <section class="section section-tint" id="experience" aria-labelledby="exp-h">
+      <div class="wrap">
+        <h2 id="exp-h" class="sec-h">Experience</h2>
+        <ol class="entries">
+          <li>
+            <span class="when">Jun – Jul 2025</span>
+            <div>
+              <h3>Research Intern</h3>
+              <p class="where">Amsterdam UMC, Department of Psychiatry (Stress in Action)</p>
+              <ul>
+                <li>Designed prompt strategies and evaluated local LLMs (Ollama) for generating conversations for aquiring stress levels across multiple clinical timelines.</li>
+                <li>Defined model selection and pipeline architecture for an early-stage conversational agent, with psychiatric researchers.</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <span class="when">Sep 2025 – May 2026</span>
+            <div>
+              <h3>Teaching Assistant</h3>
+              <p class="where">Vrije Universiteit Amsterdam, Faculty of Science</p>
+              <ul>
+                <li><b>Natural Language Processing:</b> led lab sessions on NLP pipelines, transformers and LLMs. Assessed projects across basic and advanced NLP.</li>
+                <li><b>Evolutionary Computing:</b> supported & graded students on genetic algorithms and evolution strategies for neuroevolution.</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <span class="when">Feb – Apr 2023</span>
+            <div>
+              <h3>Junior Data Analyst</h3>
+              <p class="where">SRM Institute of Medical Sciences, Chennai</p>
+              <ul>
+                <li>Built a Streamlit analytic dashboard tracking patient behaviour, revenue trends and expenses.</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= 6. EDUCATION ================= -->
+    <section class="section wrap" id="education" aria-labelledby="edu-h">
+      <h2 id="edu-h" class="sec-h">Education</h2>
+      <div class="edu">
+        <article>
+          <span class="when">2024 – 2026</span>
+          <h3>MSc Artificial Intelligence, Healthcare specialisation</h3>
+          <p class="where">Vrije Universiteit Amsterdam</p>
+          <dl class="grades">
+            <div><dt>CGPA</dt><dd>7.9/10</dd></div>
+            <div><dt>Thesis grade</dt><dd>9/10</dd></div>
+          </dl>
+          <p class="edu-note">Thesis: Evaluation of LLM-generated survival explanations</p>
+        </article>
+        <article>
+          <span class="when">2020 – 2024</span>
+          <h3>BTech Computer Science and Engineering, AI &amp; ML</h3>
+          <p class="where">SRM Institute of Science and Technology, Chennai</p>
+          <dl class="grades">
+            <div><dt>CGPA</dt><dd>9.59/10</dd></div>
+            <!-- ADD your bachelor's thesis grade here, e.g. 9/10 or A+ -->
+            <div><dt>Thesis grade</dt><dd>O (10/10)</dd></div>
+          </dl>
+          <p class="edu-note">Thesis: MedOntoKG, ontology-enhanced biomedical text mining</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= 7. SKILLS & RESEARCH INTERESTS ================= -->
+    <section class="section section-tint" id="skills" aria-labelledby="skills-h">
+      <div class="wrap">
+        <h2 id="skills-h" class="sec-h">Skills &amp; Research interests</h2>
+
+        <h3 class="sub-h">Research interests</h3>
+
+        <div class="domain">
+          <p class="domain-label">Domain</p>
+          <h4>Healthcare AI</h4>
+          <ul class="techs">
+            <li>Clinical decision support</li>
+            <li>Clinical risk communication</li>
+            <li>Mental health</li>
+            <li>Medical knowledge representation</li>
+            <li>Biomedical literature mining</li>
+          </ul>
+        </div>
+
+        <p class="domain-label methods-label">Methods</p>
+        <div class="areas">
+          <article class="area">
+            <h4>Conversational Agents</h4>
+            <p>Building LLM-based agents that hold useful, safe conversations in clinical settings.</p>
+            <ul class="techs">
+              <li>Prompt design</li>
+              <li>LLM deployment</li>
+              <li>Interactive dialogue </li>
+              <li>Retrieval &amp; knowledge grounding</li>
+            </ul>
+          </article>
+
+          <article class="area">
+            <h4>Human–AI Interaction</h4>
+            <p>How people read, trust and act on what an AI tells them, and when the AI should answer, ask or defer.</p>
+            <ul class="techs">
+              <li>Explanation design</li>
+              <li>Trust &amp; reliance</li>
+              <li>Uncertainty communication</li>
+              <li>Answer, ask or defer</li>
+            </ul>
+          </article>
+
+          <article class="area">
+            <h4>Evaluation &amp; Calibration</h4>
+            <p>Checking whether an agent's answers, and the confidence behind them, hold up before anyone relies on them.</p>
+            <ul class="techs">
+              <li>Confidence calibration</li>
+              <li>Faithfulness &amp; grounding</li>
+              <li>Robustness testing</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3 class="sub-h">Tools</h3>
+        <ul class="icon-grid">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg><span>Python</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.001 11.213c-.55-.065-.591-.803-1.297-.738-.342 0-.66.143-.66.457 0 .473.73.517 1.17.636.75.228 1.476.383 1.476 1.199 0 1.035-.811 1.394-1.884 1.394-.897 0-1.806-.318-1.806-1.142 0-.228.22-.407.432-.407.269 0 .363.114.457.301.208.367.44.563 1.019.563.367 0 .742-.139.742-.457 0-.452-.46-.55-.937-.66C.869 12.122.143 12 .057 11.062c-.09-1.598 3.242-1.659 3.433-.257-.004.253-.24.408-.489.408ZM6.964 9.81c1.171 0 1.835.979 1.835 2.186 0 1.211-.644 2.185-1.835 2.185-.66 0-1.072-.281-1.37-.713v1.598c0 .481-.155.714-.505.714-.428 0-.506-.273-.506-.714v-4.648c0-.379.159-.612.506-.612.326 0 .505.257.505.612v.13c.331-.416.71-.738 1.37-.738Zm-.277 3.54c.685 0 .991-.632.991-1.37 0-.722-.31-1.37-.991-1.37-.714 0-1.044.587-1.044 1.37 0 .762.335 1.37 1.044 1.37Zm2.907-2.398c0-.84.967-1.142 1.904-1.142 1.317 0 1.86.384 1.86 1.656v1.223c0 .29.179.869.179 1.044 0 .265-.244.432-.505.432-.29 0-.506-.342-.661-.587-.428.342-.881.587-1.574.587-.766 0-1.37-.453-1.37-1.199 0-.66.473-1.039 1.044-1.17 0 .004 1.835-.432 1.835-.436 0-.563-.2-.812-.791-.812-.522 0-.787.143-.991.457-.163.237-.143.379-.457.379-.253-.004-.473-.175-.473-.432Zm1.566 2.524c.803 0 1.142-.424 1.142-1.268v-.18c-.216.074-1.089.29-1.325.327-.253.049-.506.236-.506.534.008.326.342.587.689.587Zm5.9-5.26c1.134 0 2.361.677 2.361 1.753a.49.49 0 0 1-.481.506c-.371 0-.424-.2-.587-.481-.273-.502-.596-.836-1.297-.836-1.085-.008-1.57.921-1.57 2.079 0 1.167.404 2.007 1.525 2.007.746 0 1.158-.433 1.37-.991.086-.257.241-.506.563-.506.253 0 .506.257.506.534 0 1.142-1.167 1.933-2.365 1.933-1.313 0-2.055-.555-2.463-1.476a3.48 3.48 0 0 1-.326-1.525c-.009-1.77 1.023-2.997 2.764-2.997Zm6.483 1.594c.29 0 .457.188.457.481 0 .119-.094.355-.13.482l-1.395 3.665c-.31.795-.542 1.346-1.598 1.346-.502 0-.938-.045-.938-.481 0-.253.191-.38.457-.38.048 0 .13.025.179.025.077 0 .13.024.179.024.53 0 .604-.542.791-.917L20.2 10.724c-.078-.18-.131-.302-.131-.408 0-.294.229-.506.534-.506.343 0 .478.269.563.563l.889 2.642.889-2.442c.134-.379.147-.763.599-.763Z"/></svg><span>spaCy</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.2" text-anchor="middle" font-size="9" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="currentColor">NLTK</text></svg><span>NLTK</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378 0 1.112.178 2.181.503 3.185.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284.278.173.48.408.71.694.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542.01.026.653 1.552 1.657 2.54.616.605 1.01 1.223 1.082 1.912.055.537-.096 1.059-.38 1.572.637.121 1.294.187 1.967.187.657 0 1.298-.063 1.921-.178-.287-.517-.44-1.041-.384-1.581.07-.69.465-1.307 1.081-1.913 1.004-.987 1.647-2.513 1.657-2.539.021-.074.083-.285.233-.542.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952.23-.286.432-.52.71-.694.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174 1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013 1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164 1.607-.007 2.984-1.155 3.572-1.164.196-.003.305.12.305.454 0 .886-.424 2.328-1.563 3.202-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026-.01.008-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116 1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243 1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444-.034-.016-.104-.008-.2.022q-.094.03-.216.087-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096 3 3 0 0 0-.26.219 2 2 0 0 0-.12.121 2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203 0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647 2.822 2.813 2.562 3.244-1.176-.506-1.176-.506-2.866-2.567-3.49-1.898.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405-.238.839-2.71-1.587-3.216-.642-.506.946 3.49 2.056 3.522 2.064 1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194 1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647-2.822 2.813-2.562 3.244 1.176-.506 1.176-.506 2.866-2.567 3.49-1.898-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405.238.839 2.71-1.587 3.216-.642.506.946-3.49 2.056-3.522 2.064-1.29.33-4.568 1.028-5.713-.624"/></svg><span>Hugging Face</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.361 10.26a.894.894 0 0 0-.558.47l-.072.148.001.207c0 .193.004.217.059.353.076.193.152.312.291.448.24.238.51.3.872.205a.86.86 0 0 0 .517-.436.752.752 0 0 0 .08-.498c-.064-.453-.33-.782-.724-.897a1.06 1.06 0 0 0-.466 0zm-9.203.005c-.305.096-.533.32-.65.639a1.187 1.187 0 0 0-.06.52c.057.309.31.59.598.667.362.095.632.033.872-.205.14-.136.215-.255.291-.448.055-.136.059-.16.059-.353l.001-.207-.072-.148a.894.894 0 0 0-.565-.472 1.02 1.02 0 0 0-.474.007Zm4.184 2c-.131.071-.223.25-.195.383.031.143.157.288.353.407.105.063.112.072.117.136.004.038-.01.146-.029.243-.02.094-.036.194-.036.222.002.074.07.195.143.253.064.052.076.054.255.059.164.005.198.001.264-.03.169-.082.212-.234.15-.525-.052-.243-.042-.28.087-.355.137-.08.281-.219.324-.314a.365.365 0 0 0-.175-.48.394.394 0 0 0-.181-.033c-.126 0-.207.03-.355.124l-.085.053-.053-.032c-.219-.13-.259-.145-.391-.143a.396.396 0 0 0-.193.032zm.39-2.195c-.373.036-.475.05-.654.086-.291.06-.68.195-.951.328-.94.46-1.589 1.226-1.787 2.114-.04.176-.045.234-.045.53 0 .294.005.357.043.524.264 1.16 1.332 2.017 2.714 2.173.3.033 1.596.033 1.896 0 1.11-.125 2.064-.727 2.493-1.571.114-.226.169-.372.22-.602.039-.167.044-.23.044-.523 0-.297-.005-.355-.045-.531-.288-1.29-1.539-2.304-3.072-2.497a6.873 6.873 0 0 0-.855-.031zm.645.937a3.283 3.283 0 0 1 1.44.514c.223.148.537.458.671.662.166.251.26.508.303.82.02.143.01.251-.043.482-.08.345-.332.705-.672.957a3.115 3.115 0 0 1-.689.348c-.382.122-.632.144-1.525.138-.582-.006-.686-.01-.853-.042-.57-.107-1.022-.334-1.35-.68-.264-.28-.385-.535-.45-.946-.03-.192.025-.509.137-.776.136-.326.488-.73.836-.963.403-.269.934-.46 1.422-.512.187-.02.586-.02.773-.002zm-5.503-11a1.653 1.653 0 0 0-.683.298C5.617.74 5.173 1.666 4.985 2.819c-.07.436-.119 1.04-.119 1.503 0 .544.064 1.24.155 1.721.02.107.031.202.023.208a8.12 8.12 0 0 1-.187.152 5.324 5.324 0 0 0-.949 1.02 5.49 5.49 0 0 0-.94 2.339 6.625 6.625 0 0 0-.023 1.357c.091.78.325 1.438.727 2.04l.13.195-.037.064c-.269.452-.498 1.105-.605 1.732-.084.496-.095.629-.095 1.294 0 .67.009.803.088 1.266.095.555.288 1.143.503 1.534.071.128.243.393.264.407.007.003-.014.067-.046.141a7.405 7.405 0 0 0-.548 1.873c-.062.417-.071.552-.071.991 0 .56.031.832.148 1.279L3.42 24h1.478l-.05-.091c-.297-.552-.325-1.575-.068-2.597.117-.472.25-.819.498-1.296l.148-.29v-.177c0-.165-.003-.184-.057-.293a.915.915 0 0 0-.194-.25 1.74 1.74 0 0 1-.385-.543c-.424-.92-.506-2.286-.208-3.451.124-.486.329-.918.544-1.154a.787.787 0 0 0 .223-.531c0-.195-.07-.355-.224-.522a3.136 3.136 0 0 1-.817-1.729c-.14-.96.114-2.005.69-2.834.563-.814 1.353-1.336 2.237-1.475.199-.033.57-.028.776.01.226.04.367.028.512-.041.179-.085.268-.19.374-.431.093-.215.165-.333.36-.576.234-.29.46-.489.822-.729.413-.27.884-.467 1.352-.561.17-.035.25-.04.569-.04.319 0 .398.005.569.04a4.07 4.07 0 0 1 1.914.997c.117.109.398.457.488.602.034.057.095.177.132.267.105.241.195.346.374.43.14.068.286.082.503.045.343-.058.607-.053.943.016 1.144.23 2.14 1.173 2.581 2.437.385 1.108.276 2.267-.296 3.153-.097.15-.193.27-.333.419-.301.322-.301.722-.001 1.053.493.539.801 1.866.708 3.036-.062.772-.26 1.463-.533 1.854a2.096 2.096 0 0 1-.224.258.916.916 0 0 0-.194.25c-.054.109-.057.128-.057.293v.178l.148.29c.248.476.38.823.498 1.295.253 1.008.231 2.01-.059 2.581a.845.845 0 0 0-.044.098c0 .006.329.009.732.009h.73l.02-.074.036-.134c.019-.076.057-.3.088-.516.029-.217.029-1.016 0-1.258-.11-.875-.295-1.57-.597-2.226-.032-.074-.053-.138-.046-.141.008-.005.057-.074.108-.152.376-.569.607-1.284.724-2.228.031-.26.031-1.378 0-1.628-.083-.645-.182-1.082-.348-1.525a6.083 6.083 0 0 0-.329-.7l-.038-.064.131-.194c.402-.604.636-1.262.727-2.04a6.625 6.625 0 0 0-.024-1.358 5.512 5.512 0 0 0-.939-2.339 5.325 5.325 0 0 0-.95-1.02 8.097 8.097 0 0 1-.186-.152.692.692 0 0 1 .023-.208c.208-1.087.201-2.443-.017-3.503-.19-.924-.535-1.658-.98-2.082-.354-.338-.716-.482-1.15-.455-.996.059-1.8 1.205-2.116 3.01a6.805 6.805 0 0 0-.097.726c0 .036-.007.066-.015.066a.96.96 0 0 1-.149-.078A4.857 4.857 0 0 0 12 3.03c-.832 0-1.687.243-2.456.698a.958.958 0 0 1-.148.078c-.008 0-.015-.03-.015-.066a6.71 6.71 0 0 0-.097-.725C8.997 1.392 8.337.319 7.46.048a2.096 2.096 0 0 0-.585-.041Zm.293 1.402c.248.197.523.759.682 1.388.03.113.06.244.069.292.007.047.026.152.041.233.067.365.098.76.102 1.24l.002.475-.12.175-.118.178h-.278c-.324 0-.646.041-.954.124l-.238.06c-.033.007-.038-.003-.057-.144a8.438 8.438 0 0 1 .016-2.323c.124-.788.413-1.501.696-1.711.067-.05.079-.049.157.013zm9.825-.012c.17.126.358.46.498.888.28.854.36 2.028.212 3.145-.019.14-.024.151-.057.144l-.238-.06a3.693 3.693 0 0 0-.954-.124h-.278l-.119-.178-.119-.175.002-.474c.004-.669.066-1.19.214-1.772.157-.623.434-1.185.68-1.382.078-.062.09-.063.159-.012z"/></svg><span>Ollama</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.2" text-anchor="middle" font-size="9" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="currentColor">API</text></svg><span>OpenAI API</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.005 0L4.952 7.053a9.865 9.865 0 000 14.022 9.866 9.866 0 0014.022 0c3.984-3.9 3.986-10.205.085-14.023l-1.744 1.743c2.904 2.905 2.904 7.634 0 10.538s-7.634 2.904-10.538 0-2.904-7.634 0-10.538l4.647-4.646.582-.665zm3.568 3.899a1.327 1.327 0 00-1.327 1.327 1.327 1.327 0 001.327 1.328A1.327 1.327 0 0016.9 5.226 1.327 1.327 0 0015.573 3.9z"/></svg><span>PyTorch</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.292 5.856L11.54 0v24l-4.095-2.378V7.603l-6.168 3.564.015-5.31zm21.43 5.311l-.014-5.31L12.46 0v24l4.095-2.378V14.87l3.092 1.788-.018-4.618-3.074-1.756V7.603l6.168 3.564z"/></svg><span>TensorFlow</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.601 5.53c-1.91.035-3.981.91-5.63 2.56-2.93 2.93-2.083 8.53-1.088 9.525.805.804 6.595 1.843 9.526-1.088a9.74 9.74 0 0 0 .584-.643c.043-.292.205-.66.489-1.106a1.848 1.848 0 0 1-.537.176c-.144.265-.37.55-.676.855-.354.335-.607.554-.76.656a.795.795 0 0 1-.437.152c-.35 0-.514-.308-.494-.924-.22.316-.425.549-.612.7a.914.914 0 0 1-.578.224c-.194 0-.36-.09-.496-.273a1.03 1.03 0 0 1-.193-.507 4.016 4.016 0 0 1-.726.583c-.224.132-.47.197-.74.197-.3 0-.543-.096-.727-.288a.978.978 0 0 1-.257-.524v.004c-.3.276-.564.48-.79.611a1.295 1.295 0 0 1-.649.197.693.693 0 0 1-.571-.275c-.145-.183-.218-.43-.218-.739 0-.464.101-1.02.302-1.67.201-.65.445-1.25.733-1.797l.842-.312a.21.21 0 0 1 .06-.013c.063 0 .116.047.157.14.04.095.061.221.061.38 0 .451-.104.888-.312 1.31-.207.422-.532.873-.974 1.352-.018.23-.027.388-.027.474 0 .193.036.345.106.458.071.113.165.169.282.169a.71.71 0 0 0 .382-.13c.132-.084.333-.26.602-.523.028-.418.187-.798.482-1.142.324-.38.685-.569 1.08-.569.206 0 .37.054.494.16a.524.524 0 0 1 .186.417c0 .458-.486.829-1.459 1.114.088.43.32.646.693.646a.807.807 0 0 0 .417-.117c.129-.076.321-.243.575-.497.032-.252.118-.495.259-.728.182-.3.416-.544.701-.73.285-.185.537-.278.756-.278.276 0 .47.127.58.381l.677-.374h.186l-.292.971c-.15.488-.226.823-.226 1.004 0 .19.067.285.202.285.086 0 .181-.045.285-.137.104-.092.25-.232.437-.42v.001c.143-.155.274-.32.392-.494-.19-.084-.285-.21-.285-.375 0-.17.058-.352.174-.545.116-.194.275-.29.479-.29.172 0 .258.088.258.265 0 .139-.05.338-.149.596.367-.04.687-.32.961-.842l.228-.01c1.059-2.438.828-5.075-.83-6.732-1.019-1.02-2.408-1.5-3.895-1.471zm4.725 8.203a8.938 8.938 0 0 1-1.333 2.151 1.09 1.09 0 0 0-.012.147c0 .168.047.309.14.423.092.113.206.17.34.17.296 0 .714-.264 1.254-.787-.001.04-.003.08-.003.121 0 .146.012.368.036.666l.733-.172c0-.2.003-.357.01-.474.01-.157.033-.33.066-.517.02-.11.07-.216.152-.315l.186-.216a5.276 5.276 0 0 1 .378-.397c.062-.055.116-.099.162-.13a.26.26 0 0 1 .123-.046c.055 0 .083.035.083.106 0 .07-.052.236-.156.497-.194.486-.292.848-.292 1.084 0 .175.046.314.136.418a.45.45 0 0 0 .358.155c.365 0 .803-.269 1.313-.808v-.381c-.361.426-.623.64-.784.64-.109 0-.163-.067-.163-.2 0-.1.065-.316.195-.65.19-.486.285-.836.285-1.048a.464.464 0 0 0-.112-.319.36.36 0 0 0-.282-.127c-.165 0-.354.077-.567.233-.213.156-.5.436-.863.84.053-.262.165-.622.335-1.08l-.809.156a6.54 6.54 0 0 0-.399 1.074c-.04.156-.07.316-.092.48a7.447 7.447 0 0 1-.49.45.38.38 0 0 1-.229.08.208.208 0 0 1-.174-.082.352.352 0 0 1-.064-.222c0-.1.019-.214.056-.343.038-.13.12-.373.249-.731l.308-.849zm-17.21-2.927c-.863-.016-1.67.263-2.261.854-1.352 1.352-1.07 3.827.631 5.527 1.7 1.701 4.95 1.21 5.527.632.467-.466 1.07-3.827-.631-5.527-.957-.957-2.158-1.465-3.267-1.486zm12.285.358h.166v.21H15.4zm.427 0h.166v.865l.46-.455h.195l-.364.362.428.684h-.198l-.357-.575-.164.166v.41h-.166zm1.016 0h.166v.21h-.166zm.481.122h.166v.288h.172v.135h-.172v.717c0 .037.006.062.02.075.012.013.037.02.074.02a.23.23 0 0 0 .078-.01v.141a.802.802 0 0 1-.136.014.23.23 0 0 1-.15-.043.15.15 0 0 1-.052-.123v-.79h-.141v-.136h.141zm-3.562.258c.081 0 .15.012.207.038.057.024.1.061.13.11s.045.106.045.173h-.176c-.006-.111-.075-.167-.208-.167a.285.285 0 0 0-.164.041.134.134 0 0 0-.06.117c0 .035.015.065.045.088.03.024.08.044.15.06l.16.039a.47.47 0 0 1 .224.105c.047.046.07.108.07.186a.3.3 0 0 1-.052.175.327.327 0 0 1-.152.116.585.585 0 0 1-.226.041c-.136 0-.24-.03-.309-.088-.069-.059-.105-.149-.109-.269h.176c.004.037.01.065.017.084a.166.166 0 0 0 .034.054c.044.043.112.065.204.065a.31.31 0 0 0 .177-.045.139.139 0 0 0 .067-.119.116.116 0 0 0-.038-.09.287.287 0 0 0-.124-.055l-.156-.038a1.248 1.248 0 0 1-.159-.05.359.359 0 0 1-.098-.061.22.22 0 0 1-.058-.083.32.32 0 0 1-.016-.108c0-.096.036-.174.109-.232a.45.45 0 0 1 .29-.087zm1.035 0a.46.46 0 0 1 .202.043.351.351 0 0 1 .187.212.577.577 0 0 1 .023.126h-.168a.256.256 0 0 0-.078-.168.242.242 0 0 0-.17-.06.248.248 0 0 0-.155.05.306.306 0 0 0-.1.144.662.662 0 0 0-.034.224.58.58 0 0 0 .035.214.299.299 0 0 0 .101.135.261.261 0 0 0 .157.048c.142 0 .227-.084.256-.252h.167a.519.519 0 0 1-.065.22.35.35 0 0 1-.146.138.464.464 0 0 1-.216.048.448.448 0 0 1-.246-.066.441.441 0 0 1-.161-.192.703.703 0 0 1-.057-.293c0-.085.01-.163.032-.233a.522.522 0 0 1 .095-.182.403.403 0 0 1 .15-.117.453.453 0 0 1 .191-.04zm.603.03h.166v1.046H15.4zm1.443 0h.166v1.046h-.166zm-5.05.618c-.08 0-.2.204-.356.611-.155.407-.308.977-.459 1.71.281-.312.509-.662.683-1.05.175-.387.262-.72.262-.999a.455.455 0 0 0-.036-.197c-.025-.05-.056-.075-.093-.075zm4.662 1.797c-.221 0-.431.188-.629.563-.197.376-.296.722-.296 1.038 0 .12.029.216.088.29a.273.273 0 0 0 .223.111c.221 0 .43-.188.625-.565.196-.377.294-.725.294-1.043a.457.457 0 0 0-.083-.29.269.269 0 0 0-.222-.104zm-2.848.007c-.146 0-.285.11-.417.333-.133.222-.2.51-.2.866.566-.159.849-.452.849-.881 0-.212-.077-.318-.232-.318Z"/></svg><span>scikit-learn</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.922 0h2.623v18.104h-2.623zm-4.126 12.94h2.623v2.57h-2.623zm0-7.037h2.623v5.446h-2.623zm0 11.197h2.623v5.446h-2.623zM4.456 5.896h2.622V24H4.455zm4.213 2.559h2.623v2.57H8.67zm0 4.151h2.623v5.447H8.67zm0-11.187h2.623v5.446H8.67Z"/></svg><span>pandas</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.315 4.876L6.3048 2.8517l-4.401 2.1965 4.1186 2.0683zm1.8381.9277l4.2045 2.1223-4.3622 2.1906-4.125-2.0718zm5.6153-2.9213l4.3193 2.1658-3.863 1.9402-4.2131-2.1252zm-1.859-.9329L12.021 0 8.1742 1.9193l4.0068 2.0208zm-3.0401 16.7443V24l4.7107-2.3507-.0053-5.3085zm4.7037-4.2057l-.0052-5.2528-4.6985 2.3356v5.2546zm5.6553-.9845v5.327l-4.0178 2.0052-.0029-5.3028zm0-1.8626V6.4214l-4.0253 2.001.0034 5.2633zM11.2062 11.571L8.0333 9.9756v6.895s-3.8804-8.2564-4.2399-8.998c-.0463-.0957-.2371-.2007-.2858-.2262C2.8118 7.2812.773 6.2485.773 6.2485V18.43l2.8204 1.5076v-6.3674s3.8392 7.3775 3.878 7.458c.0389.0807.4245.8582.8362 1.1314.5485.363 2.8992 1.7766 2.8992 1.7766z"/></svg><span>NumPy</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.2" text-anchor="middle" font-size="9" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="currentColor">plt</text></svg><span>Matplotlib</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.673 11.32l6.862-3.618c.233-.136.554.12.442.387L20.463 17.1zm-8.556-.229l3.473-5.187c.203-.328.578-.316.793-.028l7.886 11.75zm-3.375 7.25c-.28 0-.835-.284-.993-.716l-3.72-9.46c-.118-.331.139-.614.48-.464l19.474 10.306c-.149.147-.453.337-.72.334z"/></svg><span>Streamlit</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.629 13.227c-.593 0-1.139.2-1.58.533l-2.892-1.976a2.61 2.61 0 0 0 .101-.711 2.633 2.633 0 0 0-2.629-2.629A2.632 2.632 0 0 0 0 11.073a2.632 2.632 0 0 0 2.629 2.629c.593 0 1.139-.2 1.579-.533L7.1 15.145c-.063.226-.1.465-.1.711 0 .247.037.484.1.711l-2.892 1.976a2.608 2.608 0 0 0-1.579-.533A2.632 2.632 0 0 0 0 20.639a2.632 2.632 0 0 0 2.629 2.629 2.632 2.632 0 0 0 2.629-2.629c0-.247-.037-.485-.101-.711l2.892-1.976c.441.333.987.533 1.58.533a2.633 2.633 0 0 0 2.629-2.629c0-1.45-1.18-2.629-2.629-2.629ZM16.112.732c-4.72 0-7.888 2.748-7.888 8.082v3.802a3.525 3.525 0 0 1 3.071.008v-3.81c0-3.459 1.907-5.237 4.817-5.237s4.817 1.778 4.817 5.237v8.309H24V8.814C24 3.448 20.832.732 16.112.732Z"/></svg><span>Neo4j</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.405 5.501c-.115 0-.193.014-.274.033v.013h.014c.054.104.146.18.214.273.054.107.1.214.154.32l.014-.015c.094-.066.14-.172.14-.333-.04-.047-.046-.094-.08-.14-.04-.067-.126-.1-.18-.153zM5.77 18.695h-.927a50.854 50.854 0 00-.27-4.41h-.008l-1.41 4.41H2.45l-1.4-4.41h-.01a72.892 72.892 0 00-.195 4.41H0c.055-1.966.192-3.81.41-5.53h1.15l1.335 4.064h.008l1.347-4.064h1.095c.242 2.015.384 3.86.428 5.53zm4.017-4.08c-.378 2.045-.876 3.533-1.492 4.46-.482.716-1.01 1.073-1.583 1.073-.153 0-.34-.046-.566-.138v-.494c.11.017.24.026.386.026.268 0 .483-.075.647-.222.197-.18.295-.382.295-.605 0-.155-.077-.47-.23-.944L6.23 14.615h.91l.727 2.36c.164.536.233.91.205 1.123.4-1.064.678-2.227.835-3.483zm12.325 4.08h-2.63v-5.53h.885v4.85h1.745zm-3.32.135l-1.016-.5c.09-.076.177-.158.255-.25.433-.506.648-1.258.648-2.253 0-1.83-.718-2.746-2.155-2.746-.704 0-1.254.232-1.65.697-.43.508-.646 1.256-.646 2.245 0 .972.19 1.686.574 2.14.35.41.877.615 1.583.615.264 0 .506-.033.725-.098l1.325.772.36-.622zM15.5 17.588c-.225-.36-.337-.94-.337-1.736 0-1.393.424-2.09 1.27-2.09.443 0 .77.167.977.5.224.362.336.936.336 1.723 0 1.404-.424 2.108-1.27 2.108-.445 0-.77-.167-.978-.5zm-1.658-.425c0 .47-.172.856-.516 1.156-.344.3-.803.45-1.384.45-.543 0-1.064-.172-1.573-.515l.237-.476c.438.22.833.328 1.19.328.332 0 .593-.073.783-.22a.754.754 0 00.3-.615c0-.33-.23-.61-.648-.845-.388-.213-1.163-.657-1.163-.657-.422-.307-.632-.636-.632-1.177 0-.45.157-.81.47-1.085.315-.278.72-.415 1.22-.415.512 0 .98.136 1.4.41l-.213.476a2.726 2.726 0 00-1.064-.23c-.283 0-.502.068-.654.206a.685.685 0 00-.248.524c0 .328.234.61.666.85.393.215 1.187.67 1.187.67.433.305.648.63.648 1.168zm9.382-5.852c-.535-.014-.95.04-1.297.188-.1.04-.26.04-.274.167.055.053.063.14.11.214.08.134.218.313.346.407.14.11.28.216.427.31.26.16.555.255.81.416.145.094.293.213.44.313.073.05.12.14.214.172v-.02c-.046-.06-.06-.147-.105-.214-.067-.067-.134-.127-.2-.193a3.223 3.223 0 00-.695-.675c-.214-.146-.682-.35-.77-.595l-.013-.014c.146-.013.32-.066.46-.106.227-.06.435-.047.67-.106.106-.027.213-.06.32-.094v-.06c-.12-.12-.21-.283-.334-.395a8.867 8.867 0 00-1.104-.823c-.21-.134-.476-.22-.697-.334-.08-.04-.214-.06-.26-.127-.12-.146-.19-.34-.275-.514a17.69 17.69 0 01-.547-1.163c-.12-.262-.193-.523-.34-.763-.69-1.137-1.437-1.826-2.586-2.5-.247-.14-.543-.2-.856-.274-.167-.008-.334-.02-.5-.027-.11-.047-.216-.174-.31-.235-.38-.24-1.364-.76-1.644-.072-.18.434.267.862.422 1.082.115.153.26.328.34.5.047.116.06.235.107.356.106.294.207.622.347.897.073.14.153.287.247.413.054.073.146.107.167.227-.094.136-.1.334-.154.5-.24.757-.146 1.693.194 2.25.107.166.362.534.703.393.3-.12.234-.5.32-.835.02-.08.007-.133.048-.187v.015c.094.188.188.367.274.555.206.328.566.668.867.895.16.12.287.328.487.402v-.02h-.015c-.043-.058-.1-.086-.154-.133a3.445 3.445 0 01-.35-.4 8.76 8.76 0 01-.747-1.218c-.11-.21-.202-.436-.29-.643-.04-.08-.04-.2-.107-.24-.1.146-.247.273-.32.453-.127.288-.14.642-.188 1.01-.027.007-.014 0-.027.014-.214-.052-.287-.274-.367-.46-.2-.475-.233-1.238-.06-1.785.047-.14.247-.582.167-.716-.042-.127-.174-.2-.247-.303a2.478 2.478 0 01-.24-.427c-.16-.374-.24-.788-.414-1.162-.08-.173-.22-.354-.334-.513-.127-.18-.267-.307-.368-.52-.033-.073-.08-.194-.027-.274.014-.054.042-.075.094-.09.088-.072.335.022.422.062.247.1.455.194.662.334.094.066.195.193.315.226h.14c.214.047.455.014.655.073.355.114.675.28.962.46a5.953 5.953 0 012.085 2.286c.08.154.115.295.188.455.14.33.313.663.455.982.14.315.275.636.476.897.1.14.502.213.682.286.133.06.34.115.46.188.23.14.454.3.67.454.11.076.443.243.463.378z"/></svg><span>SQL</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z"/></svg><span>Git</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>GitHub</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.176 2.814c.233.42.476.78.73 1.09.247-.013 1.132.456 1.312.523.508.282 1.063.63 1.567.966.505.337.96.662 1.272.9.156.12.278.218.352.286a.483.483 0 01.078.082.08.08 0 01.01.021.06.06 0 01-.004.047.057.057 0 01-.04.03.077.077 0 01-.028 0c-.057 0-.203-.163-.497-.415a23.474 23.474 0 00-2.759-1.827c-.504-.28-.956-.542-1.264-.613a2.322 2.322 0 00-.36-.025 2.706 2.706 0 00-.788.133c.494.414.91.716 1.28.949-.57-.182-1.182-.21-1.902.133.526.329.967.567 1.354.745 1.103.156 2.258.696 3.224 1.309.483.307.904.615 1.219.867.157.125.29.237.39.328.098.091.174.154.197.21.03.073-.019.104-.084.058-.032-.022-.088-.102-.184-.191a7.35 7.35 0 00-.384-.327c-.312-.25-.729-.552-1.209-.857-.893-.562-2.232-1.013-3.173-1.397-.602-.11-1.225-.06-1.906.39.449.2.837.349 1.182.463.812 0 1.892.365 2.935.922 1.042.556 2.04 1.214 2.523 1.774.066.077-.016.126-.074.07-.52-.495-1.463-1.204-2.498-1.756-.639-.337-2.153-1.01-2.886-1.01l.004.002c-.567.02-1.13.195-1.679.716.477.118.885.196 1.244.249-.44.088-.87.3-1.289.722.324.07.616.122.882.162-.328.159-.639.404-.923.78.373.03.703.042 1 .044-.36.166-.696.43-.996.85.533.027.98.025 1.364.003-.422.172-.812.464-1.145.968.662.01 1.188-.022 1.628-.076l-.006.002c.99-.073 2.297.127 2.962.847.052.057-.024.118-.072.074-.648-.58-1.493-.827-2.89-.921h-.002c-.543.149-1.046.446-1.46 1.074.536.008.982-.013 1.366-.05-.469.257-.873.644-1.139 1.306.483-.092.888-.19 1.237-.292-.363.265-.668.636-.873 1.194.324-.072.612-.146.871-.221a2.519 2.519 0 00-.513 1.095c.352-.13.655-.254.926-.377-.257.3-.453.681-.55 1.19.495-.199.899-.388 1.238-.568-.31.333-.543.76-.635 1.356a11.816 11.816 0 001.442-.744c-.433.362-.764.843-.879 1.587.788-.348 1.339-.663 1.767-.955-.184.372-.282.806-.235 1.348.762-.584 1.243-1.056 1.602-1.473-.024.269-.003.56.077.884.546-.939 1.089-1.212 1.65-1.526-.895.451-.762.79-.762 1.184.683-.72 1.635-1.482 1.927-1.96-.39.585-.547 1.14-.65 1.63-1.993 1.054-3.207 1.329-4.568 1.75.528.194 1.093.383.859.652l-.624.622c.399-.124.805-.3 1.158-.059-.035.327-.447.492-.8.683.621-.224.756-.172.92-.12.081.393-.203.603-.388.862 1.565-1.19 3.606-2.13 5.044-2.522 2.022-.681 4.63-1.389 5.339-3.115l.712-2.847-.004.004c-.111-.034-.246-.063-.35-.133a.651.651 0 01-.235-.297c-.252.065-.44.03-.56-.088-.117-.117-.167-.296-.203-.491-.203.041-.362.016-.467-.077-.116-.101-.17-.26-.198-.444l-.008-.039.037-.015a.842.842 0 00.302-.194.257.257 0 00.07-.225l-.006-.037.03-.016c.163-.093.345-.169.428-.28a.274.274 0 00.053-.21.88.88 0 00-.155-.357l-.027-.04.04-.027c.118-.09.244-.179.308-.26.032-.04.048-.076.047-.11 0-.033-.015-.07-.064-.117l-.098-.094.135.006c.213.01.395-.007.538-.053a.504.504 0 00.274-.197c-.007-.033-.02-.063-.02-.098a.484.484 0 01.967 0c0 .044-.015.084-.026.125.177.014.347.01.507-.06l.002.001.035-.013c.236-.085.334.045.72-.456-1.69-2.19-4.157-.635-4.977 1.622-.21.576-1.405.578-1.751 0-1.37-2.95-5.53-6.068-9.07-7.218zm.86 2.145c.906.293 1.913.782 2.77 1.328.43.273.813.543 1.114.779.301.236.566.473.62.575.054.102 0 .14-.082.06-.081-.078-.303-.32-.6-.553-.298-.234-.68-.505-1.106-.777-.775-.49-1.982-.958-2.716-1.412zm-1.7 2.7c1.116.014 2.35.447 3.434.997.541.275 1.023.567 1.395.83.372.263.672.524.734.657.061.134-.02.13-.087.055a4.401 4.401 0 00-.704-.626 11.47 11.47 0 00-1.385-.826C3.76 8.264 2.439 7.82 1.336 7.66zm14.916.772a.381.381 0 100 .762.381.381 0 000-.762zM1.7 8.478c.822.072 1.72.368 2.534.75 1.086.509 2.035 1.158 2.434 1.667.035.045-.014.131-.08.062-.428-.44-1.322-1.131-2.397-1.635-.913-.421-2.282-.87-3.262-.78.251-.03.497-.088.771-.064zm16.339.01c-.366.475-.53.423-.703.464.094.43.35.586.585.77l-.06.012c2.315-.447 4.186-.286 6.139-.236l-5.961-1.01zm-.178 1.246h-.002l-.004.016.006-.016zm-.625-.757c-.183.074-.373.076-.563.059a.477.477 0 01-.42.26.483.483 0 01-.435-.278.609.609 0 01-.274.188c-.139.045-.308.057-.493.055.02.035.054.068.055.104a.273.273 0 01-.069.174c-.073.092-.189.17-.295.248.087.141.137.26.149.362a.39.39 0 01-.07.284c-.106.14-.288.21-.439.293a.374.374 0 01-.09.268.89.89 0 01-.297.198c.027.156.074.283.154.354.086.076.211.103.425.047l.055-.014.01.055c.033.207.088.385.187.483.1.099.244.135.503.055l.049-.015.016.048c.05.142.12.223.209.282.087.06.247.112.358.147.798-.869 1.525-1.772 1.884-2.86-.225-.177-.506-.338-.609-.797zm-16.23.386c1.165-.08 2.283.196 3.202.626.92.43 1.658.939 1.974 1.307.075.087-.019.12-.072.072a8.187 8.187 0 00-1.947-1.29c-.904-.414-2.193-.644-3.157-.715zm.864.802c.61.02 1.24.155 1.806.352.756.262 1.421.614 1.747.98.045.05-.007.127-.074.069-.349-.304-.961-.693-1.706-.951-.574-.195-1.613-.369-2.268-.397.197-.022.292-.06.495-.053zm1.05 1.788c.423.034.886.133 1.341.407.043.026.049.136-.049.09-.856-.402-1.326-.49-2.457-.31.386-.128.74-.221 1.164-.187zm-.04.788c.4-.035.784-.002 1.297.204.044.018.08.126-.033.094-.857-.243-1.167-.328-2.287.104.28-.229.622-.366 1.023-.402zm1.285.687c.317-.023.635-.026.934.006.052.006.055.105-.006.102a7.87 7.87 0 00-1.837.115c-.243.046-.423.043-1.405.458.287-.233.794-.452 1.385-.56a8.91 8.91 0 01.93-.12zm1.28.49c.099.003.062.104.006.103-.728-.01-1.304.132-1.875.295a9.78 9.78 0 00-1.318.525c.283-.23.713-.457 1.291-.622.579-.166 1.248-.326 1.896-.302zm.528.398c.036-.005.105.084.018.1-.73.137-1.244.267-1.794.454-.216.074-.58.207-1.243.587.26-.269.656-.492 1.213-.68.558-.19 1.196-.37 1.806-.46zm.311.507c.075-.012.097.087.02.102-1.217.241-1.76.556-2.54 1.144.504-.523 1.297-1.051 2.52-1.246zm.595.448c.087-.013.11.087.021.1-.872.13-1.477.553-2.255 1.33.295-.493 1.004-1.24 2.234-1.43zm.372.39c.046-.006.114.073.023.1a2.634 2.634 0 00-.669.3c-.182.118-.3.2-.597.507.111-.245.296-.434.542-.59.247-.157.509-.293.7-.317z"/></svg><span>LaTeX</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="16.0" text-anchor="middle" font-size="11" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="currentColor">VS</text></svg><span>VS Code</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="16.0" text-anchor="middle" font-size="11" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="currentColor">Az</text></svg><span>Azure</span></li>
+        </ul>
+
+        <div class="certs-row">
+          <button class="btn btn-ghost" data-open="certs">Verify certifications</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 8. BEYOND THE CV (personal story, closed by default) =================
+    <section class="section wrap" id="story" aria-labelledby="story-h">
+      <h2 id="story-h" class="sec-h">Beyond the CV</h2>
+      <div class="story-head">
+        <p class="story-intro">The four pieces behind how I came to this research.</p>
+        <button class="btn btn-ghost story-toggle" aria-expanded="false" aria-controls="story-body">Show the story</button>
+      </div>
+
+      DRAFT: check every sentence is accurate and sounds like you.
+           Each piece's knob position is set by --k (distance from the top). -->
+      <!-- <div id="story-body" hidden>
+      <ol class="pieces">
+        <li class="piece" style="--k: 30%">
+          <span class="piece-num">1</span>
+          <h3>The Observer</h3>
+          <p>Board games and dance trained me to notice patterns and think a move ahead.</p>
+          <p class="piece-line">Every move suggests another possibility.</p>
+        </li>
+        <li class="piece" style="--k: 62%">
+          <span class="piece-num">2</span>
+          <h3>The Spark</h3>
+          <p>A fascination with how the body works met language technology. My first NLP project selected clinical trials for cancer patients.</p>
+          <p class="piece-line">Where language meets medicine.</p>
+        </li>
+        <li class="piece" style="--k: 36%">
+          <span class="piece-num">3</span>
+          <h3>The Leap</h3>
+          <p>A new country and a new focus: an MSc in AI for healthcare in Amsterdam, moving from extracting clinical knowledge to questioning it.</p>
+          <p class="piece-line">Every challenge became a stepping stone.</p>
+        </li>
+        <li class="piece">
+          <span class="piece-num">4</span>
+          <h3>The Vision</h3>
+          <p>Every capability comes with a cost. I want clinical AI whose confidence can be checked before it is trusted.</p>
+          <p class="piece-line">AI that matters, where every decision counts.</p>
+        </li>
+      </ol>
+
+      <p class="story-coda">Curiosity sharpened by dance.<br>Strategy refined by board games.<br>Purpose built through conviction.</p>
+      </div>
+    </section> --> 
+
+  </main>
+
+  <footer class="footer wrap">
+    <p class="muted">Amsterdam, Netherlands</p>
+  </footer>
+
+
+  <!-- =====================================================
+       POP-UP WINDOWS (methodology + architecture)
+       Each button's data-open matches a dialog id below.
+       ===================================================== -->
+
+    <!-- ---------- Certifications (opened by "Verify certifications") ---------- -->
+  <dialog id="certs" class="modal" aria-labelledby="certs-h">
+    <div class="modal-head">
+      <p class="project-kind">Certifications</p>
+      <h3 id="certs-h">Verify my certifications</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <div class="cert-groups">
+
+      <section>
+        <h4>Healthcare AI</h4>
+        <ul class="cert-list">
+          <li>
+            <div><b>Skin Cancer Imaging Challenge 2025</b><span>VUmc, Medical AI · 2025</span></div>
+            <a href="https://drive.google.com/file/d/1KCXGDpyWwjHgRnw9G7C8Usjq8tTJfgvA/view?usp=sharing" target="_blank" rel="noopener">Show credential</a>
+          </li>
+          <li class="cert-lead">
+            <div>
+              <b>AI for Medicine (specialisation)</b>
+              <span>DeepLearning.AI · Apr 2023 · 3 courses</span>
+              <ul class="cert-parts">
+                <li>AI for Medical Diagnosis <span>Feb 2023</span></li>
+                <li>AI for Medical Prognosis <span>Mar 2023</span></li>
+                <li>AI for Medical Treatment <span>Apr 2023</span></li>
+              </ul>
+            </div>
+            <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/Z6BCJVV5M6C7" target="_blank" rel="noopener">Show credential</a>
+          </li>
+          <!-- TODO: add the Udemy link, or delete the <a> line below -->
+          <li>
+            <div><b>The Complete Healthcare Artificial Intelligence Course</b><span>Udemy · Jan 2023 · ID UC-6707349a-3f9e-466a-bf26-af577539b9d7</span></div>
+            <a href="https://www.udemy.com/certificate/UC-6707349a-3f9e-466a-bf26-af577539b9d7/" target="_blank" rel="noopener">Show credential</a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>Machine learning</h4>
+        <ul class="cert-list">
+          <li>
+            <div><b>Master Deep Learning Using Case Studies</b><span>Udemy · Apr 2023</span></div>
+            <a href="https://udemy-certificate.s3.amazonaws.com/pdf/UC-fa7e21ef-93c2-4f9e-aa7c-91c18b07aedb.pdf" target="_blank" rel="noopener">Show credential</a>
+          </li>
+          <li>
+            <div><b>Introduction to Machine Learning</b><span>NPTEL, SWAYAM · Oct 2022 · ID NPTEL22CS97S23271729</span></div>
+            <a href="https://nptel.ac.in/noc/E_Certificate/NPTEL22CS97S2327172909034005" target="_blank" rel="noopener">Show credential</a>
+          </li>
+          <li>
+            <div><b>The Ultimate Beginners Guide to Genetic Algorithms in Python</b><span>Udemy · Aug 2022 · ID UC-e6c53305-6086-4767-bb0f-864cbb7e0653</span></div>
+            <a href="https://www.udemy.com/certificate/UC-e6c53305-6086-4767-bb0f-864cbb7e0653/" target="_blank" rel="noopener">Show credential</a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>Cloud</h4>
+        <ul class="cert-list">
+          <li>
+            <div><b>Microsoft Certified: Azure AI Fundamentals</b><span>Microsoft · Aug 2022 · ID 990963600</span></div>
+            <a href="https://www.credly.com/badges/057517c5-a434-405e-8d69-3ebfcb42f66d/public_url" target="_blank" rel="noopener">Show credential</a>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </dialog>
+
+  <!-- ---------- Thesis: methodology ---------- -->
+  <dialog id="m-thesis" class="modal" aria-labelledby="m-thesis-h">
+    <div class="modal-head">
+      <p class="project-kind">Methodology</p>
+      <h3 id="m-thesis-h">Evaluating LLM-generated survival explanations</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <div class="method">
+      <section><h4>Question</h4><p>When a language model explains a pancreatic cancer survival prediction, can its stated confidence be trusted, and does that depend on how it is prompted?</p></section>
+      <section><h4>Approach</h4><p>I generated 300 synthetic pancreatic cancer survival cases and selected 50 by stratified sampling. MedGemma (via Ollama) explained each case under eight prompt and decoding set-ups, giving 400 explanations. A fully automated framework scored each one on numerical correctness, risk-label agreement, robustness, and faithfulness.</p></section>
+      <section><h4>Findings</h4><ul><li>How credible a confidence signal is depends on the prompt style.</li><li>Misplaced certainty poses a greater clinical safety risk than hallucination.</li></ul></section>
+      <section><h4>Why it matters</h4><p>Before LLMs explain risk to clinicians or patients, each confidence signal needs its own calibration requirements. Limits: synthetic patients, one model and one cancer type. I have since extended the idea to multiple models in a separate paper, now under review.</p></section>
+    </div>
+  </dialog>
+
+  <!-- ---------- Thesis: architecture ---------- -->
+  <dialog id="a-thesis" class="modal" aria-labelledby="a-thesis-h">
+    <div class="modal-head">
+      <p class="project-kind">Architecture</p>
+      <h3 id="a-thesis-h">Evaluation pipeline</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <!-- YOUR DIAGRAM: save it as assets/architecture/msc-thesis-architecture.jpg
+         (jpg, JPG or SVG; change the file name below if it differs).
+         If the file is missing, this slot hides itself and the simplified
+         step-by-step version below is shown instead. -->
+    <figure class="arch-img">
+      <a href="assets/architecture/msc-thesis-architecture.jpg" target="_blank" rel="noopener" title="Open full size">
+        <img src="assets/architecture/msc-thesis-architecture.jpg" alt="Evaluation pipeline from my master's thesis">
+      </a>
+      <figcaption>Click the diagram to open it full size.</figcaption>
+    </figure>
+    <details class="flow-wrap" open>
+      <summary>Simplified step-by-step view</summary>
+    <ol class="flow">
+      <li><b>Synthetic survival cases</b><span>300 pancreatic cancer cases, with survival model predictions</span></li>
+      <li><b>Stratified sampling</b><span>50 cases selected</span></li>
+      <li><b>Prompt and decoding set-ups</b><span>8 variations per case</span></li>
+      <li><b>MedGemma via Ollama</b><span>400 generated explanations</span></li>
+      <li class="flow-split">
+        <b>Automated evaluation</b>
+        <ul>
+          <li>Numerical correctness</li>
+          <li>Risk-label agreement</li>
+          <li>Robustness</li>
+          <li>Confidence calibration</li>
+          <li>Narrative faithfulness</li>
+        </ul>
+      </li>
+      <li class="flow-end"><b>Comparison across configurations</b><span>Which confidence signals can be trusted</span></li>
+    </ol>
+      <p class="modal-note">Simplified overview.</p>
+    </details>
+  </dialog>
+
+  <!-- ---------- MedOntoKG: methodology ---------- -->
+  <dialog id="m-medonto" class="modal" aria-labelledby="m-medonto-h">
+    <div class="modal-head">
+      <p class="project-kind">Methodology</p>
+      <h3 id="m-medonto-h">MedOntoKG</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <div class="method">
+      <section><h4>Question</h4><p>Thousands of new abstracts on Alzheimer's and other neurodegenerative diseases appear every year. Can NLP turn that literature into a structured, navigable map of what is known about diagnosis, prognosis and treatment?</p></section>
+      <section><h4>Approach</h4><p>I collected 23,897 Scopus abstracts (2022–2024) and cleaned them to 17,851. A pretrained biomedical tagger labelled candidate terms, and I fine-tuned XLNet to assign them to 41 entity types. A second XLNet model classified each abstract as diagnosis, prognosis or treatment. Relations between terms came from cosine similarity of fine-tuned XLNet embeddings (threshold 0.90), and the results were organised into an RDF ontology per aspect and a Neo4j knowledge graph.</p></section>
+      <section><h4>Findings</h4><ul><li>Abstract classification reached 85% validation accuracy (weighted F1 0.85) on 3,571 held-out abstracts. It was weakest on prognosis, the smallest class.</li><li>Entity typing reached F1 0.69 across 41 types, with early stopping to limit overfitting.</li><li>The ontologies capture sub-classes such as signs and symptoms, lab values, severity, medication and therapeutic procedures.</li></ul></section>
+      <section><h4>Why it matters</h4><p>An ontology-backed graph makes the evidence behind each answer traceable, a foundation for knowledge-driven decision support. Limits: entity labels came from a pretrained tagger rather than expert annotation, the classes were imbalanced, and some extracted terms are still noisy.</p></section>
+    </div>
+  </dialog>
+
+  <!-- ---------- MedOntoKG: architecture ---------- -->
+  <dialog id="a-medonto" class="modal" aria-labelledby="a-medonto-h">
+    <div class="modal-head">
+      <p class="project-kind">Architecture</p>
+      <h3 id="a-medonto-h">Knowledge graph pipeline</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <!-- YOUR DIAGRAM: save it as assets/architecture/medontokg-architecture.jpg
+         (jpg, JPG or SVG; change the file name below if it differs).
+         If the file is missing, this slot hides itself and the simplified
+         step-by-step version below is shown instead. -->
+    <figure class="arch-img">
+      <a href="assets/architecture/medontokg-architecture.jpg" target="_blank" rel="noopener" title="Open full size">
+        <img src="assets/architecture/medontokg-architecture.jpg" alt="MedOntoKG architecture from my bachelor's thesis">
+      </a>
+      <figcaption>Click the diagram to open it full size.</figcaption>
+    </figure>
+    <details class="flow-wrap" open>
+      <summary>Simplified step-by-step view</summary>
+    <ol class="flow">
+      <li><b>Scopus abstracts</b><span>23,897 retrieved (2022–2024), 17,851 after cleaning</span></li>
+      <li><b>Text preprocessing</b><span>Lower-casing, punctuation removal, lemmatisation, tokenisation, stop-word removal</span></li>
+      <li class="flow-split">
+        <b>Two XLNet modules</b>
+        <ul>
+          <li>Entity recognition: 41 entity types</li>
+          <li>Abstract classification: diagnosis, prognosis, treatment</li>
+        </ul>
+      </li>
+      <li><b>Semantic relation extraction</b><span>Fine-tuned XLNet embeddings, cosine similarity above 0.90</span></li>
+      <li><b>Ontology construction</b><span>RDF ontology for each aspect, with sub-classes such as symptoms, severity and medication</span></li>
+      <li class="flow-end"><b>Neo4j knowledge graph</b><span>Diagnosis, prognosis and treatment, each linked to its entity classes</span></li>
+    </ol>
+      <p class="modal-note">Simplified from the thesis architecture (Figure 3.3).</p>
+    </details>
+  </dialog>
+
+  <!-- ---------- Hybrid: methodology ---------- -->
+  <dialog id="m-hybrid" class="modal" aria-labelledby="m-hybrid-h">
+    <div class="modal-head">
+      <p class="project-kind">Methodology</p>
+      <h3 id="m-hybrid-h">Hybrid ontology extraction</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <div class="method">
+      <section><h4>Question</h4><p>Manual ontology building is precise but slow; fully automated LLM extraction scales but drifts. How should the work be split between human annotators and an LLM to get both quality and scale?</p></section>
+      <section><h4>Approach</h4><p>We split ten papers on hybrid intelligence: five were annotated manually, and five went straight to the LLM for triple generation. Direct generation produced heavily repetitive output, so we redesigned it as a hybrid. The manual ontology now defines the classes, GPT-4o Turbo extracts entities within them with a confidence score per term, and relations are matched using FastText embeddings and cosine similarity. The result was linked to DBpedia and queried with SPARQL.</p></section>
+      <section><h4>Findings</h4><ul><li>Direct LLM generation produced many repeated triples, plus contradictions and out-of-scope relations.</li><li>Ontology-guided prompts, confidence intervals and similarity thresholds reduced these issues (qualitative comparison).</li><li>The ontology grew from 114 to 811 triples.</li></ul></section>
+      <section><h4>Why it matters</h4><p>LLMs work best as co-pilots for knowledge engineering, with humans owning the structure. Limits: a small corpus and a qualitative comparison; a link-prediction test (ComplEx) scored low (MRR 0.05), reflecting how sparse the graph still is.</p></section>
+      <section class="method-role"><h4>My role</h4><p>I worked primarily on the LLM triple generation: the first direct-generation attempt, and the redesign that guided GPT-4o Turbo with the manual ontology to extract entities and propose the relations that became new triples.</p></section>
+    </div>
+  </dialog>
+
+  <!-- ---------- Hybrid: architecture ---------- -->
+  <dialog id="a-hybrid" class="modal" aria-labelledby="a-hybrid-h">
+    <div class="modal-head">
+      <p class="project-kind">Architecture</p>
+      <h3 id="a-hybrid-h">Hybrid extraction pipeline</h3>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <!-- YOUR DIAGRAM: save it as assets/architecture/hybrid-ontology-architecture.jpg
+         (jpg, JPG or SVG; change the file name below if it differs).
+         If the file is missing, this slot hides itself and the simplified
+         step-by-step version below is shown instead. -->
+    <figure class="arch-img">
+      <a href="assets/architecture/hybrid-ontology-architecture.jpg" target="_blank" rel="noopener" title="Open full size">
+        <img src="assets/architecture/hybrid-ontology-architecture.jpg" alt="Hybrid system flow from the project report">
+      </a>
+      <figcaption>Click the diagram to open it full size.</figcaption>
+    </figure>
+    <details class="flow-wrap" open>
+      <summary>Simplified step-by-step view</summary>
+        <ol class="flow">
+      <li><b>Research papers</b><span>10 papers on hybrid intelligence</span></li>
+      <li class="flow-split">
+        <b>Split the work</b>
+        <ul>
+          <li>5 papers: manual ontology</li>
+          <li>5 papers: LLM triple generation</li>
+        </ul>
+      </li>
+      <li><b>Named entity recognition</b><span>GPT-4o Turbo, guided by ontology classes, with a confidence score per term</span></li>
+      <li><b>Repetition check</b><span>Against existing manually extracted instances</span></li>
+      <li><b>Semantic relation extraction</b><span>FastText embeddings, cosine similarity above 0.95</span></li>
+      <li><b>Relation definition</b><span>LLM reuses an existing relation or proposes a new one</span></li>
+      <li class="flow-end"><b>Merged ontology</b><span>811 triples, linked to DBpedia, queried with SPARQL</span></li>
+    </ol>
+      <p class="modal-note">Simplified from the report's system flow; this replaced a first, direct LLM pass that produced heavily repetitive triples.</p>
+    </details>
+  </dialog>
+
+<script>
+/* =========================================================
+   Ramya Ragu: portfolio interactions
+   ========================================================= */
+
+/* ---------- 1. Light / dark toggle ---------- */
+document.querySelector('.theme-btn')?.addEventListener('click', () => {
+  const root = document.documentElement;
+  const isDark = root.dataset.theme
+    ? root.dataset.theme === 'dark'
+    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = isDark ? 'light' : 'dark';
+  try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+});
+
+/* ---------- 2. Phone menu ---------- */
+const menuBtn = document.querySelector('.menu-btn');
+const nav = document.querySelector('.nav');
+menuBtn?.addEventListener('click', () => {
+  const open = menuBtn.getAttribute('aria-expanded') === 'true';
+  menuBtn.setAttribute('aria-expanded', String(!open));
+  nav.classList.toggle('is-open', !open);
+});
+nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  menuBtn.setAttribute('aria-expanded', 'false');
+  nav.classList.remove('is-open');
+}));
+
+/* ---------- 3. Highlight the current section in the menu ---------- */
+const navLinks = [...document.querySelectorAll('.nav a')];
+const setActive = id => navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+}, { rootMargin: '-40% 0px -55% 0px' });
+navLinks.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) spy.observe(s); });
+document.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  if (h.scrollTop < 200) setActive('');
+  else if (h.scrollTop + h.clientHeight >= h.scrollHeight - 4) setActive('skills');
+}, { passive: true });
+
+/* ---------- 4. Pop-up windows (methodology and architecture) ---------- */
+document.querySelectorAll('[data-open]').forEach(btn => {
+  const dlg = document.getElementById(btn.dataset.open);
+  if (!dlg) return;
+  btn.addEventListener('click', () => {
+    dlg.showModal();
+    document.body.style.overflow = 'hidden';
+  });
+});
+document.querySelectorAll('dialog.modal').forEach(dlg => {
+  dlg.querySelector('.close')?.addEventListener('click', () => dlg.close());
+  // Click on the dimmed background closes the window
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', () => { document.body.style.overflow = ''; });
+});
+
+/* ---------- 5. Your own architecture diagrams ---------- */
+// If the image exists, show it and collapse the simplified view.
+// If it's missing, hide the image slot and show the simplified view.
+document.querySelectorAll('.arch-img img').forEach(img => {
+  const fig = img.closest('.arch-img');
+  const dlg = img.closest('dialog');
+  const flow = dlg?.querySelector('.flow-wrap');
+  const missing = () => { fig.hidden = true; dlg?.classList.add('no-arch-img'); if (flow) flow.open = true; };
+  const found = () => { if (flow) flow.open = false; };
+  if (img.complete) { img.naturalWidth ? found() : missing(); }
+  img.addEventListener('load', found);
+  img.addEventListener('error', missing);
+  img.loading = 'eager'; // load in the background so the pop-up opens ready
+});
+
+// /* ---------- 6. "Beyond the CV": open the story, pieces merge as it appears ---------- */
+// const storyBtn = document.querySelector('.story-toggle');
+// const storyBody = document.getElementById('story-body');
+// const pieces = document.querySelector('#story-body .pieces');
+// const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// storyBtn?.addEventListener('click', () => {
+//   const open = storyBtn.getAttribute('aria-expanded') === 'true';
+//   storyBtn.setAttribute('aria-expanded', String(!open));
+//   storyBtn.textContent = open ? 'Show the story' : 'Hide the story';
+//   storyBody.hidden = open;
+//   if (!open && pieces && !calm) {
+//     pieces.classList.remove('merged');
+//     pieces.classList.add('will-merge');
+//     requestAnimationFrame(() => requestAnimationFrame(() => pieces.classList.add('merged')));
+//   }
+// });
+// // The menu's "Story" link opens the section too
+// document.querySelectorAll('a[href="#story"]').forEach(a => a.addEventListener('click', () => {
+//   if (storyBtn?.getAttribute('aria-expanded') === 'false') storyBtn.click();
+// }));
+
+// /* ---------- 7. Research path: pieces merge when the section comes into view ---------- */
+// const pathPieces = document.querySelector('.path-pieces');
+// if (pathPieces && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+//   pathPieces.classList.add('will-merge');
+//   const pp = new IntersectionObserver(entries => {
+//     if (entries.some(e => e.isIntersecting)) { pathPieces.classList.add('merged'); pp.disconnect(); }
+//   }, { threshold: 0.35 });
+//   pp.observe(pathPieces);
+// }
+
+</script>
+</body>
+</html>
