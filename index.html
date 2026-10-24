@@ -98,14 +98,53 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .nav a.is-active { border-bottom-color: var(--rule); }
 }
 
-/* ---------- 1. Hero ---------- */
-.hero { padding-top: clamp(3.5rem, 10vw, 7rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
+/* ---------- 1. Greeting screen ---------- */
+.hero {
+  min-height: calc(100svh - 3.6rem);
+  display: flex; flex-direction: column; justify-content: center;
+  padding-block: clamp(3rem, 8vw, 5rem);
+}
+.hero-hello { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--muted); margin: 0 0 .5rem; }
 .hero-name {
   font-family: var(--serif); font-weight: 400; letter-spacing: -.02em;
-  font-size: clamp(3rem, 9vw, 5.5rem); line-height: 1;
+  font-size: clamp(3rem, 9vw, 5.5rem); line-height: 1.02;
 }
-.hero-identity { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--accent); font-weight: 500; margin: 1rem 0 1.5rem; }
-.hero-pitch { font-size: clamp(1.1rem, 2.2vw, 1.3rem); line-height: 1.55; max-width: 40rem; color: var(--ink); margin-bottom: 2rem; }
+.hero-name span { color: var(--accent); }
+.hero-identity { font-size: clamp(1.1rem, 2.4vw, 1.45rem); line-height: 1.45; max-width: 38rem; margin: 1.25rem 0 1.5rem; color: var(--ink); font-weight: 400; }
+.hero-identity strong { font-weight: 500; color: var(--accent); }
+.status {
+  display: inline-flex; align-items: center; gap: .55rem; align-self: flex-start;
+  font-size: .9rem; font-weight: 500; padding: .35rem .9rem; border-radius: 999px;
+  background: var(--accent-soft); color: var(--accent); margin-bottom: 2rem; line-height: 1.4;
+}
+.status::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
+.scroll-cue {
+  margin-top: clamp(2.5rem, 7vw, 4rem); align-self: flex-start;
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--muted); text-decoration: none; font-size: .9rem;
+}
+.scroll-cue:hover { color: var(--accent); }
+.scroll-cue svg { width: 1rem; height: 1rem; animation: nudge 2s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue svg { animation: none; } }
+
+/* ---------- 2. About ---------- */
+.about-grid { display: grid; gap: 2rem; align-items: center; }
+@media (min-width: 52rem) { .about-grid { grid-template-columns: 15rem 1fr; gap: 3.5rem; } }
+.about-photo { margin: 0; }
+.about-photo img {
+  display: block; width: 10rem; height: 10rem; object-fit: cover; object-position: center 20%;
+  border-radius: 50%; border: 4px solid var(--card);
+  box-shadow: 0 0 0 1px var(--rule), 0 10px 30px -12px rgba(0,0,0,.25);
+}
+@media (min-width: 52rem) { .about-photo img { width: 15rem; height: 15rem; } }
+.about-text p { font-size: 1.05rem; max-width: 42rem; }
+.about { border-top: 1px solid var(--rule); }
+.about-text .belief {
+  font-family: var(--serif); font-weight: 500; font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+  line-height: 1.35; color: var(--ink); margin: 1.5rem 0 1.75rem;
+  padding-left: 1rem; border-left: 3px solid var(--accent);
+}
 
 .quick-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
 .quick-links a {
@@ -440,10 +479,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
       <a class="brand" href="#top">Ramya Ragu</a>
       <nav aria-label="Sections">
         <ul class="nav" id="nav">
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#publications">Publications</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#education">Education</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#publications">Publications</a></li>
           <li><a href="#skills">Skills</a></li>
         </ul>
       </nav>
@@ -458,28 +498,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   <main id="main">
 
-      <!-- ================= 1. HERO ================= -->
+      <!-- ================= 1. GREETING ================= -->
     <section class="hero wrap" id="top">
-      <div class="hero-grid">
- 
-        <!-- Photo: circle beside the text -->
-        <figure class="hero-photo">
-          <img src="assets/ramya.jpeg" alt="Ramya Ragu" width="320" height="320">
-        </figure>
- 
-        <div class="hero-text">
-          <!-- a) Headline: name + core identity -->
-          <h1 class="hero-name">Ramya Ragu</h1>
-          <p class="hero-identity">NLP &amp; Human–AI Interaction · Clinical &amp; Biomedical Applications</p>
- 
-          <!-- b) Pitch -->
-          <p class="hero-pitch">I've always been curious to observe and learn, and I believe every move suggests another possibility. I bring the same habit to technology, weighing several implementation strategies before settling on one. Healthcare draws me most because it is a high-stakes environment where every decision has consequences and a single error can cost lives. I see working within that challenge as a privilege: it means understanding how we think and act under pressure.</p>
- 
-          <!-- Outside tech -->
-          <p class="hero-aside">Away from the screen, I'm usually dancing (Bharatanatyam) or plotting my next move in a board game.</p>
- 
-          <!-- c) Quick links -->
-          <ul class="quick-links">
+      <p class="hero-hello">Hello there!</p>
+      <h1 class="hero-name">I'm <span>Ramya Ragu</span>,</h1>
+      <p class="hero-identity">an AI researcher and engineer in <strong>clinical NLP</strong> and <strong>human–AI interaction</strong>, based in Amsterdam.</p>
+      <p class="status">Open to PhD, research and AI engineering roles</p>
+
+      <!-- Quick links -->
+      <ul class="quick-links">
             <li>
               <a href="mailto:ramyaragu2506@gmail.com">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email
@@ -495,13 +522,41 @@ button { font: inherit; color: inherit; cursor: pointer; }
                 <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="4"/><text x="12" y="17" text-anchor="middle" font-size="12" font-weight="700" font-family="IBM Plex Sans, sans-serif" class="li-text">in</text></svg>LinkedIn
               </a>
             </li>
+          </ul>
+
+      <a class="scroll-cue" href="#about">About me
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </section>
+
+    <!-- ================= 2. ABOUT ================= -->
+    <section class="section about" id="about" aria-labelledby="about-h">
+      <div class="wrap about-grid">
+        <figure class="about-photo">
+          <img src="assets/ramya.jpeg" alt="Ramya Ragu" width="320" height="320">
+        </figure>
+
+       <div class="about-text">
+          <h2 id="about-h" class="sec-h">About me</h2>
+          <p>I'm a recent MSc graduate in Artificial Intelligence (Healthcare) from Vrije Universiteit Amsterdam. I build and evaluate language-model systems for clinical settings: how they explain their predictions, how confident they sound, and whether that confidence can be trusted. Healthcare draws me because it is high-stakes: a single error can cost lives.</p>
+          <p>Away from the screen, I'm usually dancing Bharatanatyam or plotting my next move in a board game. I'm now looking for research and AI roles, in academia or industry, where I can help build conversational AI that clinicians can rely on: AI that knows when to answer, when to defer and when to ask.</p>
+
+          <p class="belief">AI matters most where every decision counts.</p>
+
+          <ul class="quick-links">
             <li>
               <a class="primary" href="assets/CV_ramya_ragu_2026.pdf" download>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0-4.5-4.5M12 14l4.5-4.5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Download CV
               </a>
             </li>
+            <li>
+              <a href="mailto:ramyaragu2506@gmail.com">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email
+              </a>
+            </li>
           </ul>
         </div>
+      </div>
     </section>
 
         <!-- ================= 2. RESEARCH PATH ================= -->
@@ -543,6 +598,76 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
     </section> -->
 
+    
+
+    <!-- ================= 5. EXPERIENCE ================= -->
+    <section class="section section-tint" id="experience" aria-labelledby="exp-h">
+      <div class="wrap">
+        <h2 id="exp-h" class="sec-h">Experience</h2>
+        <ol class="entries">
+          <li>
+            <span class="when">Jun – Jul 2025</span>
+            <div>
+              <h3>Research Intern</h3>
+              <p class="where">Amsterdam UMC, Department of Psychiatry (Stress in Action)</p>
+              <ul>
+                <li>Designed prompt strategies and evaluated local LLMs (Ollama) for generating conversations for aquiring stress levels across multiple clinical timelines.</li>
+                <li>Defined model selection and pipeline architecture for an early-stage conversational agent, with psychiatric researchers.</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <span class="when">Sep 2025 – May 2026</span>
+            <div>
+              <h3>Teaching Assistant</h3>
+              <p class="where">Vrije Universiteit Amsterdam, Faculty of Science</p>
+              <ul>
+                <li><b>Natural Language Processing:</b> led lab sessions on NLP pipelines, transformers and LLMs. Assessed projects across basic and advanced NLP.</li>
+                <li><b>Evolutionary Computing:</b> supported & graded students on genetic algorithms and evolution strategies for neuroevolution.</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <span class="when">Feb – Apr 2023</span>
+            <div>
+              <h3>Junior Data Analyst</h3>
+              <p class="where">SRM Institute of Medical Sciences, Chennai</p>
+              <ul>
+                <li>Built a Streamlit analytic dashboard tracking patient behaviour, revenue trends and expenses.</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= 6. EDUCATION ================= -->
+    <section class="section wrap" id="education" aria-labelledby="edu-h">
+      <h2 id="edu-h" class="sec-h">Education</h2>
+      <div class="edu">
+        <article>
+          <span class="when">2024 – 2026</span>
+          <h3>MSc Artificial Intelligence, Healthcare specialisation</h3>
+          <p class="where">Vrije Universiteit Amsterdam</p>
+          <dl class="grades">
+            <div><dt>CGPA</dt><dd>7.9/10</dd></div>
+            <div><dt>Thesis grade</dt><dd>9/10</dd></div>
+          </dl>
+          <p class="edu-note">Thesis: Evaluation of LLM-generated survival explanations</p>
+        </article>
+        <article>
+          <span class="when">2020 – 2024</span>
+          <h3>BTech Computer Science and Engineering, AI &amp; ML</h3>
+          <p class="where">SRM Institute of Science and Technology, Chennai</p>
+          <dl class="grades">
+            <div><dt>CGPA</dt><dd>9.59/10</dd></div>
+            <!-- ADD your bachelor's thesis grade here, e.g. 9/10 or A+ -->
+            <div><dt>Thesis grade</dt><dd>O (10/10)</dd></div>
+          </dl>
+          <p class="edu-note">Thesis: MedOntoKG, ontology-enhanced biomedical text mining</p>
+        </article>
+      </div>
+    </section>
     <!-- ================= 3. FEATURED PROJECTS ================= -->
     <section class="section section-tint" id="projects" aria-labelledby="projects-h">
       <div class="wrap">
@@ -649,76 +774,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
         </li>
       </ul>
     </section>
-
-    <!-- ================= 5. EXPERIENCE ================= -->
-    <section class="section section-tint" id="experience" aria-labelledby="exp-h">
-      <div class="wrap">
-        <h2 id="exp-h" class="sec-h">Experience</h2>
-        <ol class="entries">
-          <li>
-            <span class="when">Jun – Jul 2025</span>
-            <div>
-              <h3>Research Intern</h3>
-              <p class="where">Amsterdam UMC, Department of Psychiatry (Stress in Action)</p>
-              <ul>
-                <li>Designed prompt strategies and evaluated local LLMs (Ollama) for generating conversations for aquiring stress levels across multiple clinical timelines.</li>
-                <li>Defined model selection and pipeline architecture for an early-stage conversational agent, with psychiatric researchers.</li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <span class="when">Sep 2025 – May 2026</span>
-            <div>
-              <h3>Teaching Assistant</h3>
-              <p class="where">Vrije Universiteit Amsterdam, Faculty of Science</p>
-              <ul>
-                <li><b>Natural Language Processing:</b> led lab sessions on NLP pipelines, transformers and LLMs. Assessed projects across basic and advanced NLP.</li>
-                <li><b>Evolutionary Computing:</b> supported & graded students on genetic algorithms and evolution strategies for neuroevolution.</li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <span class="when">Feb – Apr 2023</span>
-            <div>
-              <h3>Junior Data Analyst</h3>
-              <p class="where">SRM Institute of Medical Sciences, Chennai</p>
-              <ul>
-                <li>Built a Streamlit analytic dashboard tracking patient behaviour, revenue trends and expenses.</li>
-              </ul>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ================= 6. EDUCATION ================= -->
-    <section class="section wrap" id="education" aria-labelledby="edu-h">
-      <h2 id="edu-h" class="sec-h">Education</h2>
-      <div class="edu">
-        <article>
-          <span class="when">2024 – 2026</span>
-          <h3>MSc Artificial Intelligence, Healthcare specialisation</h3>
-          <p class="where">Vrije Universiteit Amsterdam</p>
-          <dl class="grades">
-            <div><dt>CGPA</dt><dd>7.9/10</dd></div>
-            <div><dt>Thesis grade</dt><dd>9/10</dd></div>
-          </dl>
-          <p class="edu-note">Thesis: Evaluation of LLM-generated survival explanations</p>
-        </article>
-        <article>
-          <span class="when">2020 – 2024</span>
-          <h3>BTech Computer Science and Engineering, AI &amp; ML</h3>
-          <p class="where">SRM Institute of Science and Technology, Chennai</p>
-          <dl class="grades">
-            <div><dt>CGPA</dt><dd>9.59/10</dd></div>
-            <!-- ADD your bachelor's thesis grade here, e.g. 9/10 or A+ -->
-            <div><dt>Thesis grade</dt><dd>O (10/10)</dd></div>
-          </dl>
-          <p class="edu-note">Thesis: MedOntoKG, ontology-enhanced biomedical text mining</p>
-        </article>
-      </div>
-    </section>
-
     <!-- ================= 7. SKILLS & RESEARCH INTERESTS ================= -->
     <section class="section section-tint" id="skills" aria-labelledby="skills-h">
       <div class="wrap">
